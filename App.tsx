@@ -1,42 +1,38 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { HomeScreen } from './src/Presentation/views/home/Home';
+import { RegisterScreen } from './src/Presentation/views/register/Register';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Image source={require('./assets/chef.jpg')} style={styles.imageBackground}/>
-      
-      <View style={styles.form}>
-
-      </View>
-      
-      {/* <StatusBar style="auto" /> */}
-    </View>
-  );
+export type RootStackParamList = {
+  HomeScreen: undefined,
+  RegisterScreen: undefined,
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'black',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-  },
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
-  imageBackground:{
-    width:'100%',
-    height:'100%',
-    opacity: 0.7,
-    bottom: '30%',
-  },
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false, }}>
 
-  form:{
-    width: '100%',
-    height: '40%',
-    backgroundColor: '#fff',
-    position: 'absolute',
-    bottom:0,
-    borderTopLeftRadius:40,
-    borderTopRightRadius:40,
-  }
-});
+        <Stack.Screen 
+          name="HomeScreen" 
+          component={HomeScreen}
+        />
+
+        <Stack.Screen 
+          name="RegisterScreen" 
+          component={RegisterScreen} 
+          options={{
+            headerShown: true,
+            title: 'Nuevo usuario',
+          }} 
+        />
+
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default App;
