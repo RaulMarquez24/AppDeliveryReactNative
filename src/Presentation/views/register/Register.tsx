@@ -1,9 +1,14 @@
 import React from 'react'
-import { Alert, Image, StyleSheet, Text, TextInput, View, TouchableOpacity, } from 'react-native';
+import { Image, Text, View, } from 'react-native';
 import { RoundedButton } from '../../components/RoundedButton';
-import { MyColors } from '../../theme/AppTheme';
+import { CustomTextInput } from '../../components/CustomTextInput';
+import useViewModel from './ViewModel';
+import styles from './Styles';
+
 
 export const RegisterScreen = () => {
+
+    const { name, lastname, email, phone, password, confirmPassword, onChange, register } = useViewModel();
 
     return (
         <View style={styles.container}>
@@ -19,38 +24,64 @@ export const RegisterScreen = () => {
             <View style={styles.form}>
                 <Text style={styles.formText}>REGISTRARSE</Text>
 
-                <View style={styles.formInput}>
-                    <Image source={require('../../../../assets/user.png')} style={styles.formImgInput} />
-                    <TextInput style={styles.formTextInput} placeholder='Nombre'/>
-                </View>
+                <CustomTextInput
+                    image={require('../../../../assets/user.png')}
+                    placeholder='Nombre'
+                    value={name}
+                    keyboardType='default'
+                    property='name'
+                    onChangeText={onChange}
+                />
 
-                <View style={styles.formInput}>
-                    <Image source={require('../../../../assets/my_user.png')} style={styles.formImgInput} />
-                    <TextInput style={styles.formTextInput} placeholder='Apellidos'/>
-                </View>
+                <CustomTextInput
+                    image={require('../../../../assets/my_user.png')}
+                    placeholder='Apellidos'
+                    value={lastname}
+                    keyboardType='default'
+                    property='lastname'
+                    onChangeText={onChange}
+                />
 
-                <View style={styles.formInput}>
-                    <Image source={require('../../../../assets/email.png')} style={styles.formImgInput} />
-                    <TextInput style={styles.formTextInput} placeholder='Correo electronico' keyboardType='email-address' />
-                </View>
+                <CustomTextInput
+                    image={require('../../../../assets/email.png')}
+                    placeholder='Correo electronico'
+                    value={email}
+                    keyboardType='email-address'
+                    property='email'
+                    onChangeText={onChange}
+                />
 
-                <View style={styles.formInput}>
-                    <Image source={require('../../../../assets/phone.png')} style={styles.formImgInput} />
-                    <TextInput style={styles.formTextInput} placeholder='Telefono' keyboardType='numeric' />
-                </View>
+                <CustomTextInput
+                    image={require('../../../../assets/phone.png')}
+                    placeholder='Telefono'
+                    value={phone}
+                    keyboardType='numeric'
+                    property='phone'
+                    onChangeText={onChange}
+                />
 
-                <View style={styles.formInput}>
-                    <Image source={require('../../../../assets/password.png')} style={styles.formImgInput} />
-                    <TextInput style={styles.formTextInput} placeholder='Contraseña' secureTextEntry={true} />
-                </View>
+                <CustomTextInput
+                    image={require('../../../../assets/password.png')}
+                    placeholder='Contraseña'
+                    value={password}
+                    keyboardType='default'
+                    secureTextEntry={true}
+                    property='password'
+                    onChangeText={onChange}
+                />
 
-                <View style={styles.formInput}>
-                    <Image source={require('../../../../assets/confirm_password.png')} style={styles.formImgInput} />
-                    <TextInput style={styles.formTextInput} placeholder='Confirmar Contraseña' secureTextEntry={true} />
-                </View>
+                <CustomTextInput
+                    image={require('../../../../assets/confirm_password.png')}
+                    placeholder='Confirmar Contraseña'
+                    value={confirmPassword}
+                    keyboardType='default'
+                    secureTextEntry={true}
+                    property='confirmPassword'
+                    onChangeText={onChange}
+                />
 
                 <View style={{ marginTop: '8%', }}>
-                    <RoundedButton text='ENTRAR' onPress={() => Alert.alert('button pressed')} />
+                    <RoundedButton text='ENTRAR' onPress={() => register()} />
                 </View>
 
             </View>
@@ -58,89 +89,3 @@ export const RegisterScreen = () => {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'black',
-        // alignItems: 'center',
-        // justifyContent: 'center',
-    },
-
-    imageBackground: {
-        width: '100%',
-        height: '100%',
-        opacity: 0.7,
-        bottom: '30%',
-    },
-
-    form: {
-        width: '100%',
-        height: '72%',
-        backgroundColor: '#fff',
-        position: 'absolute',
-        bottom: 0,
-        borderTopLeftRadius: 40,
-        borderTopRightRadius: 40,
-        padding: 30,
-        justifyContent: 'center',
-    },
-
-    formText: {
-        fontWeight: 'bold',
-        fontSize: 16,
-    },
-
-    formInput: {
-        flexDirection: 'row',
-        marginTop: '7%',
-    },
-
-    formImgInput: {
-        width: 25,
-        height: 25,
-        marginTop: '1%',
-    },
-
-    formTextInput: {
-        flex: 1,
-        borderBottomWidth: 1,
-        borderBottomColor: '#aaaaaa',
-        marginLeft: 15,
-    },
-
-    formRegister: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        marginTop: '5%',
-    },
-
-    formRegisterTextLink: {
-        fontStyle: 'italic',
-        color: MyColors.primary,
-        textDecorationLine: "underline",
-        fontWeight: 'bold',
-        marginLeft: 10,
-    },
-
-    logoContainer: {
-        position: 'absolute',
-        alignSelf: 'center',
-        top: '5%',
-        alignItems: 'center',
-    },
-
-    logoImg: {
-        width: 85,
-        height: 85,
-    },
-
-    logoTxt: {
-        color: '#fff',
-        textAlign: 'center',
-        fontSize: 18,
-        marginTop: 10,
-        fontWeight: 'bold',
-    },
-});
-
