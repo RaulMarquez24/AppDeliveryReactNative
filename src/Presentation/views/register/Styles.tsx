@@ -19,7 +19,7 @@ const RegisterStyles = StyleSheet.create({
 
     form: {
         width: '100%',
-        height: '72%',
+        height: '75%',
         backgroundColor: '#fff',
         position: 'absolute',
         bottom: 0,

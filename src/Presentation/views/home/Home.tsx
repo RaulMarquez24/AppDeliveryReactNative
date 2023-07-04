@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
-import { Image, Text, View, TouchableOpacity } from 'react-native';
+import { Image, Text, View, TouchableOpacity, Alert } from 'react-native';
 import { RoundedButton } from '../../components/RoundedButton';
 import { CustomTextInput } from '../../components/CustomTextInput';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -10,8 +10,14 @@ import styles from './Styles';
 
 export const HomeScreen = () => {
 
-    const { email, password, onChange } = useViewModel();
+    const { email, password, errorMessage, onChange, login } = useViewModel();
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+    useEffect(() => {
+        if (errorMessage != '') {
+            Alert.alert('Error', errorMessage);
+        }
+    }, [errorMessage])
 
     return (
         <View style={styles.container}>
@@ -47,10 +53,7 @@ export const HomeScreen = () => {
                 />
 
                 <View style={{ marginTop: '8%', }}>
-                    <RoundedButton text='ENTRAR' onPress={() => {
-                        console.log('Email: ', email);
-                        console.log('Password: ', password);
-                    }} />
+                    <RoundedButton text='ENTRAR' onPress={ () => login()} />
                 </View>
 
                 <View style={styles.formRegister}>
