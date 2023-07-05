@@ -1,20 +1,22 @@
-import React, { useEffect }  from 'react'
-import { Alert, Image, ScrollView, Text, View, } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { Alert, Image, ScrollView, Text, View, TouchableOpacity } from 'react-native';
 import { RoundedButton } from '../../components/RoundedButton';
 import { CustomTextInput } from '../../components/CustomTextInput';
 import useViewModel from './ViewModel';
 import styles from './Styles';
+import ModalPickImage from '../../components/ModalPickImage';
 
 
 export const RegisterScreen = () => {
 
-    const { name, lastname, email, phone, password, confirmPassword, errorMessage , onChange, register} = useViewModel();
+    const { name, lastname, email, phone, image, password, confirmPassword, errorMessage, onChange, register, pickImage, takePhoto } = useViewModel();
+    const [modalVisible, setModalVisible] = useState(false);
 
-useEffect(() => {
-    if (errorMessage != '') {
-        Alert.alert('Error', errorMessage);
-    }
-}, [errorMessage])
+    useEffect(() => {
+        if (errorMessage != '') {
+            Alert.alert('Error', errorMessage);
+        }
+    }, [errorMessage])
 
 
     return (
@@ -23,7 +25,13 @@ useEffect(() => {
 
             {/* Logo App */}
             <View style={styles.logoContainer}>
-                <Image source={require('../../../../assets/user_image.png')} style={styles.logoImg} />
+                <TouchableOpacity onPress={() => setModalVisible(true)}>   
+                    {
+                        image == ''
+                        ? <Image source={require('../../../../assets/user_image.png')} style={styles.logoImg} />
+                        : <Image source={{ uri: image }} style={styles.logoImg} />
+                    }             
+                </TouchableOpacity>
                 <Text style={styles.logoTxt}>SELECCIONA UNA IMAGEN</Text>
             </View>
 
@@ -97,6 +105,12 @@ useEffect(() => {
                 </ScrollView>
             </View>
 
+            <ModalPickImage
+                openGallery={ pickImage }
+                openCamera={ takePhoto }
+                modalUseState={ modalVisible }
+                setModalUseState={ setModalVisible }
+            />
         </View>
     );
 }
