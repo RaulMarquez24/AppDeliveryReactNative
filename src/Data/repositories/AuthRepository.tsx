@@ -28,35 +28,24 @@ export class AuthRepositoryImpl implements AuthRepository {
     async registerWithImage(user: User, file: ImagePickerAsset): Promise<ResponseAPIDelivery> {
         try {
 
-            // const convertToBlob = async (uri: any) => {
-            //     const response = await fetch(uri);
-            //     const blob = await response.blob();
-            //     return blob;
-            // };
-
-            // const createImageFile = (blob: any, fileName: any) => {
-            //     const parts = fileName.split('/');
-            //     const name = parts[parts.length - 1];
-            //     return new File([blob], name, { type: blob.type });
-            // };
-
             let data = new FormData();
 
             data.append('image',{
                 // @ts-ignore
                 uri: file.uri, 
-                name: file.uri.split('/').pop(), 
-                type:  mime.getType(file.uri)!
-            });
+                name: file.uri.split('/').pop()||'pepe.png', 
+                type:  'image/png'
+            },file.uri);
 
             // const blob = await convertToBlob(file.uri);
             // const imageFile = createImageFile(blob, file.uri);
 
             // data.append('image', imageFile);
 
-            data.append('user', JSON.stringify('user'));
+            data.append('user', JSON.stringify(user));
 
             const response = await ApiDeliveryWithImage.post<ResponseAPIDelivery>('/users/createWithImage', data);
+            
             return Promise.resolve(response.data);
 
 

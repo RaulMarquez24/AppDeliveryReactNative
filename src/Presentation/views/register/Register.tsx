@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Image, ScrollView, Text, View, TouchableOpacity } from 'react-native';
+import { Alert, Image, ScrollView, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { RoundedButton } from '../../components/RoundedButton';
 import { CustomTextInput } from '../../components/CustomTextInput';
 import useViewModel from './ViewModel';
 import styles from './Styles';
 import ModalPickImage from '../../components/ModalPickImage';
+import { RootStackParamList } from '../../../../App';
+import { StackScreenProps } from '@react-navigation/stack';
+import { MyColors } from '../../theme/AppTheme';
 
+interface Props extends StackScreenProps<RootStackParamList, 'RegisterScreen'> { };
 
-export const RegisterScreen = () => {
+export const RegisterScreen = ({ navigation, route }: Props) => {
 
-    const { name, lastname, email, phone, image, password, confirmPassword, errorMessage, onChange, register, pickImage, takePhoto } = useViewModel();
+    const { name, lastname, email, phone, image, password, confirmPassword, errorMessage, loading, user, onChange, register, pickImage, takePhoto } = useViewModel();
     const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
@@ -18,19 +22,26 @@ export const RegisterScreen = () => {
         }
     }, [errorMessage])
 
+    useEffect(() => {
+        if (user?.id !== null && user?.id !== undefined) {
+            navigation.replace('ClientTabsNavigator');
+        }
+    }, [user])
 
     return (
         <View style={styles.container}>
+            <ActivityIndicator style={styles.loading} size="large" color={MyColors.primary} />
+
             <Image source={require('../../../../assets/chef.jpg')} style={styles.imageBackground} />
 
             {/* Logo App */}
             <View style={styles.logoContainer}>
-                <TouchableOpacity onPress={() => setModalVisible(true)}>   
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
                     {
                         image == ''
-                        ? <Image source={require('../../../../assets/user_image.png')} style={styles.logoImg} />
-                        : <Image source={{ uri: image }} style={styles.logoImg} />
-                    }             
+                            ? <Image source={require('../../../../assets/user_image.png')} style={styles.logoImg} />
+                            : <Image source={{ uri: image }} style={styles.logoImg} />
+                    }
                 </TouchableOpacity>
                 <Text style={styles.logoTxt}>SELECCIONA UNA IMAGEN</Text>
             </View>
@@ -106,11 +117,21 @@ export const RegisterScreen = () => {
             </View>
 
             <ModalPickImage
-                openGallery={ pickImage }
-                openCamera={ takePhoto }
-                modalUseState={ modalVisible }
-                setModalUseState={ setModalVisible }
+                openGallery={pickImage}
+                openCamera={takePhoto}
+                modalUseState={modalVisible}
+                setModalUseState={setModalVisible}
             />
+
+            {
+                loading &&
+                <ActivityIndicator
+                style={styles.loading}
+                size="large" 
+                color={MyColors.primary} />
+            }
+            
+
         </View>
     );
 }
