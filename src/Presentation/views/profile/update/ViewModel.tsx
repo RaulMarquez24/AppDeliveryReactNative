@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { ApiDelivery } from '../../../../Data/sources/remote/api/ApiDelivery';
 import * as ImagePicker from 'expo-image-picker';
 import { SaveUserLocalUseCase } from '../../../../Domain/useCases/userLocal/SaveUserLocal';
@@ -7,6 +7,7 @@ import { UpdateUserUseCase } from '../../../../Domain/useCases/user/UpdateUser';
 import { UpdateWithImageUserUseCase } from '../../../../Domain/useCases/user/UpdateWithImageUser';
 import { User } from '../../../../Domain/entities/User';
 import { ResponseAPIDelivery } from '../../../../Data/sources/remote/models/ResponseApiDelivery';
+import { UserContext } from '../../../context/UserContext';
 
 const ProfileUpdateViewModel = (user: User) => {
 
@@ -15,6 +16,7 @@ const ProfileUpdateViewModel = (user: User) => {
     const [loading, setLoading] = useState(false);
     const [file, setFile] = useState<ImagePicker.ImagePickerAsset>()
     const { getUserSession } = useUserLocal();
+    const { saveUserSession } = useContext( UserContext );
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -66,8 +68,9 @@ const ProfileUpdateViewModel = (user: User) => {
             setLoading(false);
             console.log('RESULT: ' + JSON.stringify(response));
             if (response.success) {
-                await SaveUserLocalUseCase(response.data);
-                getUserSession();
+                // await SaveUserLocalUseCase(response.data);
+                // getUserSession();
+                saveUserSession(response.data);
             }else{
                 setErrorMessage(response.message);
             }
