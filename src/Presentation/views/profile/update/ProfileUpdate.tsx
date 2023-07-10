@@ -14,7 +14,7 @@ interface Props extends StackScreenProps<RootStackParamList, 'ProfileUpdateScree
 export const ProfileUpdateScreen = ({ navigation, route }: Props) => {
 
     const { user } = route.params;
-    const { name, lastname, email, phone, image, password, confirmPassword, errorMessage, loading, onChange, onChangeInfoUpdate, update, pickImage, takePhoto } = useViewModel(user);
+    const { name, lastname, email, phone, image, password, confirmPassword, errorMessage, successMessage, loading, onChange, onChangeInfoUpdate, update, pickImage, takePhoto } = useViewModel(user);
     const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
@@ -22,6 +22,12 @@ export const ProfileUpdateScreen = ({ navigation, route }: Props) => {
             Alert.alert('Error', errorMessage);
         }
     }, [errorMessage])
+
+    useEffect(() => {
+        if (successMessage != '') {
+            Alert.alert('Editar usuario', successMessage);
+        }
+    }, [successMessage])
 
     return (
         <View style={styles.container}>

@@ -12,6 +12,7 @@ import { UserContext } from '../../../context/UserContext';
 const ProfileUpdateViewModel = (user: User) => {
 
     const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
     const [values, setValues] = useState(user);
     const [loading, setLoading] = useState(false);
     const [file, setFile] = useState<ImagePicker.ImagePickerAsset>()
@@ -71,6 +72,7 @@ const ProfileUpdateViewModel = (user: User) => {
                 // await SaveUserLocalUseCase(response.data);
                 // getUserSession();
                 saveUserSession(response.data);
+                setSuccessMessage(response.message);
             }else{
                 setErrorMessage(response.message);
             }
@@ -119,6 +121,7 @@ const ProfileUpdateViewModel = (user: User) => {
         takePhoto,
         onChangeInfoUpdate,
         errorMessage,
+        successMessage,
         loading,
         user
     }
