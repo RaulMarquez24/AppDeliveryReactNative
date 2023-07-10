@@ -1,4 +1,6 @@
-import axios from "axios";
+import axios, { AxiosHeaders } from "axios";
+import { LocalStorage } from "../../local/LocalStorage";
+import { User } from "../../../../Domain/entities/User";
 
 const url = 'http://192.168.189.1:3000'  
 
@@ -16,6 +18,33 @@ const ApiDeliveryWithImage = axios.create({
         'accept': 'application/json',
     }
 })
+
+// INTERCEPTORS
+ApiDelivery.interceptors.request.use( 
+    async(config) => {
+        const data = await LocalStorage().getItem('user');
+        if (data) {
+            const user: User = JSON.parse(data as any);
+            config.headers!['Authorization'] = user?.session_token!                              // | OTRA VERSION DE AXIOS
+            // (config.headers as AxiosHeaders).set("Authorization", `${user?.session_token!}`); // | OTRA VERSION DE AXIOS
+            // config.headers.set("Authorization", `${user?.session_token!}`);                   // | OTRA VERSION DE AXIOS
+        }
+        return config;
+    }
+);
+
+ApiDeliveryWithImage.interceptors.request.use( 
+    async(config) => {
+        const data = await LocalStorage().getItem('user');
+        if (data) {
+            const user: User = JSON.parse(data as any);
+            config.headers!['Authorization'] = user?.session_token!                              // | OTRA VERSION DE AXIOS
+            // (config.headers as AxiosHeaders).set("Authorization", `${user?.session_token!}`); // | OTRA VERSION DE AXIOS
+            // config.headers.set("Authorization", `${user?.session_token!}`);                   // | OTRA VERSION DE AXIOS
+        }
+        return config;
+    }
+);
 
 // const customFetch = ({url, multipart}) => {
 //     const headers = {
