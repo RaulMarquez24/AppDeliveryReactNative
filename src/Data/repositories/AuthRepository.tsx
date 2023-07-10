@@ -33,14 +33,9 @@ export class AuthRepositoryImpl implements AuthRepository {
             data.append('image',{
                 // @ts-ignore
                 uri: file.uri, 
-                name: file.uri.split('/').pop()||'pepe.png', 
+                name: file.uri.split('/').pop()||'test.png', 
                 type:  'image/png'
             },file.uri);
-
-            // const blob = await convertToBlob(file.uri);
-            // const imageFile = createImageFile(blob, file.uri);
-
-            // data.append('image', imageFile);
 
             data.append('user', JSON.stringify(user));
 
@@ -66,6 +61,7 @@ export class AuthRepositoryImpl implements AuthRepository {
                 email: email,
                 password: password
             });
+            
             return Promise.resolve(response.data);
 
 

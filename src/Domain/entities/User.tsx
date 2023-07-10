@@ -8,6 +8,7 @@ export interface User {
     phone:           string;
     password:        string;
     confirmPassword: string;
+    image?:          string;
     session_token?:  string;
     roles?:          Rol[];
 }

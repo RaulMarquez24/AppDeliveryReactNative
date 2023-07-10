@@ -47,6 +47,7 @@ export const AdminTabsNavigator = () => {
         options={{
           title: 'Perfil',
           tabBarLabel: 'Perfil',
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <Image
               source={require('../../../assets/user_menu.png')}
