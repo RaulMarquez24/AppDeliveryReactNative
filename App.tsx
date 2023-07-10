@@ -8,6 +8,7 @@ import { RolesScreen } from './src/Presentation/views/roles/Roles';
 import { AdminTabsNavigator } from './src/Presentation/navigator/AdminTabsNavigator';
 import { ClientTabsNavigator } from './src/Presentation/navigator/ClientTabsNavigator';
 import { ProfileUpdateScreen } from './src/Presentation/views/profile/update/ProfileUpdate';
+import { User } from './src/Domain/entities/User';
 
 export type RootStackParamList = {
   HomeScreen: undefined,
@@ -16,7 +17,7 @@ export type RootStackParamList = {
   RolesScreen: undefined,
   AdminTabsNavigator: undefined,
   ClientTabsNavigator: undefined,
-  ProfileUpdateScreen: undefined
+  ProfileUpdateScreen: {user: User},
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
