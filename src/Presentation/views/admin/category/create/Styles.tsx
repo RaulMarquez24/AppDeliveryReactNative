@@ -29,7 +29,7 @@ const AdminCategoryCreateStyles = StyleSheet.create({
         bottom: 20,
         left: 20,
         right: 20
-    }
+    },
     
 });
 
