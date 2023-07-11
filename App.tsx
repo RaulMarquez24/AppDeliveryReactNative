@@ -10,6 +10,8 @@ import { ClientTabsNavigator } from './src/Presentation/navigator/ClientTabsNavi
 import { ProfileUpdateScreen } from './src/Presentation/views/profile/update/ProfileUpdate';
 import { User } from './src/Domain/entities/User';
 import { UserProvider } from './src/Presentation/context/UserContext';
+import { AdminCategoryCreateScreen } from './src/Presentation/views/admin/category/create/CategoryCreate';
+import { AdminCategoryListScreen } from './src/Presentation/views/admin/category/list/CategoryList';
 
 export type RootStackParamList = {
   HomeScreen: undefined,
@@ -19,6 +21,7 @@ export type RootStackParamList = {
   AdminTabsNavigator: undefined,
   ClientTabsNavigator: undefined,
   ProfileUpdateScreen: { user: User },
+  AdminCategoryCreateScreen: undefined,
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -73,6 +76,15 @@ const App = () => {
             options={{
               headerShown: true,
               title: 'Actualizar usuario',
+            }}
+          />
+
+          <Stack.Screen
+            name="AdminCategoryCreateScreen"
+            component={AdminCategoryCreateScreen}
+            options={{
+              headerShown: true,
+              title: 'Nueva categoria',
             }}
           />
 
