@@ -21,7 +21,7 @@ export const AdminCategoryCreateScreen = () => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.imageContaine}
+            <TouchableOpacity style={styles.imageContainer}
                 onPress={() => setModalVisible(true)}>
                 {
                     image == ''
@@ -53,14 +53,14 @@ export const AdminCategoryCreateScreen = () => {
                     value={description}
                     onChangeText={onChange}
                 />
-                
+                </View>
                 <View style={styles.buttonContainer}>
                     <RoundedButton
                         text='CREAR CATEGORIA'
                         onPress={() => { createCategory() }}
                     />
                 </View>
-            </View>
+            
 
 
 

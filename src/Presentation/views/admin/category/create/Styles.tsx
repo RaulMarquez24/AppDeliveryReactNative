@@ -6,7 +6,7 @@ const AdminCategoryCreateStyles = StyleSheet.create({
     container:{
         flex:1,
     },
-    imageContaine:{
+    imageContainer:{
         paddingTop: 50,
     },
     image: {
@@ -15,14 +15,13 @@ const AdminCategoryCreateStyles = StyleSheet.create({
         resizeMode:'contain'
     },
     form:{
+        marginTop: 50,
         backgroundColor: '#fff',
         height: '65%',
         width: '100%',
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
-        paddingHorizontal: 30,
-        position: 'absolute',
-        bottom: 0,
+        paddingHorizontal: 30
     },
     buttonContainer: {
         position: 'absolute',
