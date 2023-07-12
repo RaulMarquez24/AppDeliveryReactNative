@@ -1,12 +1,25 @@
 import { AxiosError } from "axios";
 import { Category } from "../../Domain/entities/Category";
 import { CategoryRepository } from "../../Domain/repositories/CategoryRepository";
-import { ApiDeliveryWithImage } from "../sources/remote/api/ApiDelivery";
+import { ApiDelivery, ApiDeliveryWithImage } from "../sources/remote/api/ApiDelivery";
 import { ResponseAPIDelivery } from "../sources/remote/models/ResponseApiDelivery";
 import * as ImagePicker from 'expo-image-picker';
 import mime from "mime";
 
 export class CategoryRepositoryImpl implements CategoryRepository {
+
+    async getAll(): Promise<Category[]> {
+        try {
+
+            const response = await ApiDelivery.get<Category[]>('/categories/getAll');
+            return Promise.resolve(response.data);
+
+        } catch (error) {
+            let e = (error as AxiosError);
+            console.log('Error: ' + JSON.stringify(e.response?.data));
+            return Promise.resolve([]);
+        }
+    }
 
     async create(category: Category, file: ImagePicker.ImagePickerAsset): Promise<ResponseAPIDelivery> {
         try {
