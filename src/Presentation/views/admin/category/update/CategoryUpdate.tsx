@@ -15,7 +15,7 @@ interface Props extends StackScreenProps<RootStackParamList, 'AdminCategoryUpdat
 export const AdminCategoryUpdateScreen = ({navigation, route}: Props) => {
 
     const { category } = route.params;
-    const { name, description, image, responseMessage, loading, takePhoto, pickImage, onChange, createCategory } = useViewModel(category);
+    const { name, description, image, responseMessage, loading, takePhoto, pickImage, onChange, updateCategory } = useViewModel(category);
     const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
@@ -63,7 +63,7 @@ export const AdminCategoryUpdateScreen = ({navigation, route}: Props) => {
                 <View style={styles.buttonContainer}>
                     <RoundedButton
                         text='EDITAR CATEGORIA'
-                        onPress={() => { createCategory() }}
+                        onPress={() => { updateCategory() }}
                     />
                 </View>
 
