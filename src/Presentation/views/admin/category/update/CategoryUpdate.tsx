@@ -66,9 +66,6 @@ export const AdminCategoryUpdateScreen = ({navigation, route}: Props) => {
                         onPress={() => { createCategory() }}
                     />
                 </View>
-            
-
-
 
             <ModalPickImage
                 openGallery={pickImage}
