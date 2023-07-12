@@ -6,18 +6,13 @@ import { AdminCategoryListItem } from './Item';
 
 export const AdminCategoryListScreen = () => {
 
-  const { categories, responseMessage, getCategories, deleteCategory } = useViewModel();
-
-  useEffect(() => {
-    getCategories();
-  }, [])
+  const { categories, responseMessage, deleteCategory } = useViewModel();
 
   useEffect(() => {
     if (responseMessage !== '') {
       Alert.alert('Borrar categoria', responseMessage);
     }
   }, [responseMessage])
-
 
   return (
 

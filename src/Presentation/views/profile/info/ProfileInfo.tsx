@@ -3,7 +3,7 @@ import { View, Text, Button, Image, TouchableOpacity } from 'react-native';
 import useViewModel from './ViewModel';
 import styles from './Styles';
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../../../../App';
+import { RootStackParamList } from '../../../navigator/MainStackNavigator'
 import { useNavigation } from '@react-navigation/native';
 import { RoundedButton } from '../../../components/RoundedButton';
 

@@ -3,7 +3,7 @@ import { View, Text, FlatList, Dimensions, Button } from 'react-native'
 import useViewModel from './ViewModel'
 import { RolesItem } from './Item';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../../../App';
+import { RootStackParamList } from '../../navigator/MainStackNavigator'
 import Carousel from 'react-native-reanimated-carousel';
 import { GestureHandlerRootView} from 'react-native-gesture-handler';
 

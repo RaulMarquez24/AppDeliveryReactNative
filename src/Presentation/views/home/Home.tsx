@@ -4,7 +4,7 @@ import { Image, Text, View, TouchableOpacity, Alert } from 'react-native';
 import { RoundedButton } from '../../components/RoundedButton';
 import { CustomTextInput } from '../../components/CustomTextInput';
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../../../App';
+import { RootStackParamList } from '../../navigator/MainStackNavigator'
 import useViewModel from './ViewModel';
 import styles from './Styles';
 

@@ -5,7 +5,7 @@ import { CustomTextInput } from '../../../components/CustomTextInput';
 import useViewModel from './ViewModel';
 import styles from './Styles';
 import ModalPickImage from '../../../components/ModalPickImage';
-import { RootStackParamList } from '../../../../../App';
+import { RootStackParamList } from '../../../navigator/MainStackNavigator'
 import { StackScreenProps } from '@react-navigation/stack';
 import { MyColors } from '../../../theme/AppTheme';
 

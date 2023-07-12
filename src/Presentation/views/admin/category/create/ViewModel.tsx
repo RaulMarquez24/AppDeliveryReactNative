@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import * as ImagePicker from 'expo-image-picker';
 import { CreateCategoryUseCase } from '../../../../../Domain/useCases/category/CreateCategory'
+import { CategoryContext } from '../../../../context/CategoryContext';
 
 const AdminCategoryCreateViewModel = () => {
 
@@ -13,6 +14,7 @@ const AdminCategoryCreateViewModel = () => {
     const [responseMessage, setResponseMessage] = useState('');
     const [loading, setLoading] = useState(false);
     const [file, setFile] = useState<ImagePicker.ImagePickerAsset>()
+    const { create } = useContext(CategoryContext);
 
     const onChange = (property: string, value: any) => {
         setValues({ ...values, [property]: value });
@@ -20,7 +22,7 @@ const AdminCategoryCreateViewModel = () => {
 
     const createCategory = async () => {
         setLoading(true);
-        const response = await CreateCategoryUseCase(values, file!);
+        const response = await create(values, file!);
         setLoading(false);
         setResponseMessage(response.message)
         resetForm();
