@@ -15,7 +15,7 @@ export const AdminCategoryListItem = ({ category, remove }: Props) => {
     const navigation = useNavigation<StackNavigationProp<CategoryStackParamList>>();
 
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('AdminProductNavigator', { category: category})}>
 
             <View style={styles.container}>
                 <Image
