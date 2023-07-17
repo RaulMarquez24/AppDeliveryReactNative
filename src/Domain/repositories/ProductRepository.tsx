@@ -4,7 +4,7 @@ import { Product } from "../entities/Product";
 
 export interface ProductRepository {
 
-    // getAll(): Promise<Product[]>;
+    getProductsByCategory(idCategory: string): Promise<Product[]>;
     create(product: Product, files: ImagePicker.ImagePickerAsset[]): Promise<ResponseAPIDelivery>;
     // updateWithImage(product: Product, file: ImagePicker.ImagePickerAsset): Promise<ResponseAPIDelivery>;
     // update(product: Product): Promise<ResponseAPIDelivery>;
