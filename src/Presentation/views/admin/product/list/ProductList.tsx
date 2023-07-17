@@ -4,6 +4,7 @@ import { View, Text, Alert } from 'react-native';
 import useViewModel from './ViewModel';
 import { FlatList } from 'react-native-gesture-handler';
 import { ProductStackParamList } from '../../../../navigator/AdminProductNavigator';
+import { AdminProductListItem } from './Item';
 // import { AdminProductListItem } from './Item';
 
 interface Props extends StackScreenProps<ProductStackParamList, 'AdminProductListScreen'> { };
@@ -34,8 +35,7 @@ export const AdminProductListScreen = ({ navigation, route }: Props) => {
             <FlatList
                 data={products}
                 keyExtractor={(item) => item.id!}
-                renderItem={({ item }) => <Text>{ item.name }</Text>}
-                // <AdminProductListItem category={item} remove={deleteProduct} />}
+                renderItem={({ item }) => <AdminProductListItem product={item} remove={deleteProduct} />}
             />
         </View>
     )
