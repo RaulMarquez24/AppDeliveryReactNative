@@ -8,6 +8,6 @@ export interface ProductRepository {
     create(product: Product, files: ImagePicker.ImagePickerAsset[]): Promise<ResponseAPIDelivery>;
     // updateWithImage(product: Product, file: ImagePicker.ImagePickerAsset): Promise<ResponseAPIDelivery>;
     // update(product: Product): Promise<ResponseAPIDelivery>;
-    // remove(id: string): Promise<ResponseAPIDelivery>;
+    remove(product: Product): Promise<ResponseAPIDelivery>;
 
 }

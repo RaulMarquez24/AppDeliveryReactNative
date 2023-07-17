@@ -8,6 +8,21 @@ import * as ImagePicker from 'expo-image-picker';
 
 export class ProductRepositoryImpl implements ProductRepository {
 
+    async remove(product: Product): Promise<ResponseAPIDelivery> {
+        try {
+            
+            const response = await ApiDelivery.delete<ResponseAPIDelivery>(`/products/delete/${product.id}`);
+            return Promise.resolve(response.data);
+
+        } catch (error) {
+            let e = (error as AxiosError);
+            console.log('Error: ' + JSON.stringify(e.response?.data));
+            const apiError: ResponseAPIDelivery = JSON.parse(JSON.stringify(e.response?.data));
+            return Promise.resolve(apiError);
+
+        }
+    }
+
     async getProductsByCategory(idCategory: String): Promise<Product[]> {
         try {
             const response = await ApiDelivery.get<Product[]>(`/products/findByCategory/${idCategory}`);

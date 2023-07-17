@@ -4,6 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { createContext, useEffect, useState } from 'react';
 import { GetProductsByCategoryUseCase } from "../../Domain/useCases/product/GetProductsByCategory";
 import { CreateProductUseCase } from "../../Domain/useCases/product/CreateProduct";
+import { DeleteProductUseCase } from "../../Domain/useCases/product/DeleteProduct";
 // import { UpdateProductUseCase } from "../../Domain/useCases/product/UpdateProduct";
 // import { UpdateWithImageProductUseCase } from "../../Domain/useCases/product/UpdateWithImageProduct";
 // import { DeleteProductUseCase } from "../../Domain/useCases/product/DeleteProduct";
@@ -14,7 +15,7 @@ export interface ProductContextProps {
     create(product: Product, file: ImagePicker.ImagePickerAsset[]): Promise<ResponseAPIDelivery>,
     // updateWithImage(product: Product, file: ImagePicker.ImagePickerAsset): Promise<ResponseAPIDelivery>,
     // update(product: Product): Promise<ResponseAPIDelivery>,
-    // remove(id: string): Promise<ResponseAPIDelivery>,
+    remove(product: Product): Promise<ResponseAPIDelivery>,
 }
 
 export const ProductContext = createContext({} as ProductContextProps)
@@ -52,11 +53,11 @@ export const ProductProvider = ({ children }: any) => {
     //     return response;
     // }
 
-    // const remove = async (id: string): Promise<ResponseAPIDelivery> => {
-    //     const response = await DeleteProductUseCase(id);
-    //     getProducts();
-    //     return response;
-    // }
+    const remove = async (product: Product): Promise<ResponseAPIDelivery> => {
+        const response = await DeleteProductUseCase(product);
+        getProducts(product.id_category!);
+        return response;
+    }
 
     return (
         <ProductContext.Provider value={{
@@ -65,7 +66,7 @@ export const ProductProvider = ({ children }: any) => {
             create,
             // updateWithImage,
             // update,
-            // remove
+            remove
         }}>
             {children}
         </ProductContext.Provider>

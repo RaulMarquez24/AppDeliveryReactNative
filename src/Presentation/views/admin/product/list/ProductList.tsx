@@ -14,20 +14,20 @@ export const AdminProductListScreen = ({ navigation, route }: Props) => {
     // console.log('CATEGORY: ',JSON.stringify(category));
 
 
-    const { products, responseMessage, deleteProduct, getProducts } = useViewModel();
+    const { products, responseMessage, deleteProduct, getProducts} = useViewModel();
 
     useEffect(() => {
         // if (products.length === 0) {
-            getProducts(category.id!);
+        getProducts(category.id!);
         // }
     }, []);
 
 
-    //   useEffect(() => {
-    //     if (responseMessage !== '') {
-    //       Alert.alert('Borrar categoria', responseMessage);
-    //     }
-    //   }, [responseMessage])
+    useEffect(() => {
+        if (responseMessage !== '') {
+            Alert.alert('Borrar categoria', responseMessage);
+        }
+    }, [responseMessage])
 
     return (
 
@@ -35,7 +35,7 @@ export const AdminProductListScreen = ({ navigation, route }: Props) => {
             <FlatList
                 data={products}
                 keyExtractor={(item) => item.id!}
-                renderItem={({ item }) => <AdminProductListItem product={item} remove={deleteProduct} />}
+                renderItem={({ item }) => <AdminProductListItem product={item} remove={ deleteProduct } />}
             />
         </View>
     )

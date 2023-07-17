@@ -7,11 +7,11 @@ import { ProductContext } from '../../../../context/ProductContext'
 const AdminProductListViewModel = () => {
     
     const [responseMessage, setResponseMessage] = useState('');
-    const { products, getProducts } = useContext( ProductContext );
+    const { products, getProducts, remove } = useContext( ProductContext );
 
-    const deleteProduct = async (idProduct: string) => {
-        // const result = await remove(idProduct);
-        // setResponseMessage(result.message);
+    const deleteProduct = async (product: Product) => {
+        const result = await remove(product);
+        setResponseMessage(result.message);
     }
 
     return {
