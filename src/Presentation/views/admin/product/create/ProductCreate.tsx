@@ -113,7 +113,7 @@ export const AdminProductCreateScreen = ({ navigation, route }: Props) => {
                         image={require('../../../../../../assets/price.png')}
                         keyboardType='numeric'
                         property='price'
-                        value={price}
+                        value={price === 0 ? '' : price.toString()} // Verifica si price es igual a 0 y establece una cadena vacía en su lugar
                         onChangeText={onChange}
                     />
 

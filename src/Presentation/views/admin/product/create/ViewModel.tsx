@@ -3,17 +3,18 @@ import * as ImagePicker from 'expo-image-picker';
 // import { CreateProductUseCase } from '../../../../../Domain/useCases/category/CreateProduct'
 // import { ProductContext } from '../../../../context/ProductContext';
 import { Category } from '../../../../../Domain/entities/Category';
+import { ProductContext } from '../../../../context/ProductContext';
 
 const AdminProductCreateViewModel = (category: Category) => {
 
     const [values, setValues] = useState({
         name: '',
         description: '',
-        price: '',
+        price: 0,
         image1: '',
         image2: '',
         image3: '',
-        idCategory: category.id,
+        id_category: category.id,
     });
 
     const [responseMessage, setResponseMessage] = useState('');
@@ -21,7 +22,7 @@ const AdminProductCreateViewModel = (category: Category) => {
     const [file1, setFile1] = useState<ImagePicker.ImagePickerAsset>()
     const [file2, setFile2] = useState<ImagePicker.ImagePickerAsset>()
     const [file3, setFile3] = useState<ImagePicker.ImagePickerAsset>()
-    // const { create } = useContext(ProductContext);
+    const { create } = useContext(ProductContext);
 
     const onChange = (property: string, value: any) => {
         setValues({ ...values, [property]: value });
@@ -29,12 +30,17 @@ const AdminProductCreateViewModel = (category: Category) => {
 
     const createProduct = async () => {
         console.log('VALUES FORM: ', JSON.stringify(values));
-        
-        // setLoading(true);
-        // const response = await create(values, file!);
-        // setLoading(false);
-        // setResponseMessage(response.message)
-        // resetForm();
+        let files = [];
+        files.push(file1!);
+        files.push(file2!);
+        files.push(file3!);
+        setLoading(true);
+        const response = await create(values, files);
+        setLoading(false);
+        setResponseMessage(response.message)
+        if (response.success) {
+            resetForm();
+        }
     }
 
     const pickImage = async (numberImage: number) => {
@@ -49,10 +55,10 @@ const AdminProductCreateViewModel = (category: Category) => {
             if (numberImage == 1) {
                 onChange('image1', result.assets[0].uri);
                 setFile1(result.assets[0]);
-            }else if (numberImage == 2) {
+            } else if (numberImage == 2) {
                 onChange('image2', result.assets[0].uri);
                 setFile2(result.assets[0]);
-            }else if (numberImage == 3) {
+            } else if (numberImage == 3) {
                 onChange('image3', result.assets[0].uri);
                 setFile3(result.assets[0]);
             }
@@ -71,10 +77,10 @@ const AdminProductCreateViewModel = (category: Category) => {
             if (numberImage == 1) {
                 onChange('image1', result.assets[0].uri);
                 setFile1(result.assets[0]);
-            }else if (numberImage == 2) {
+            } else if (numberImage == 2) {
                 onChange('image2', result.assets[0].uri);
                 setFile2(result.assets[0]);
-            }else if (numberImage == 3) {
+            } else if (numberImage == 3) {
                 onChange('image3', result.assets[0].uri);
                 setFile3(result.assets[0]);
             }
@@ -85,11 +91,11 @@ const AdminProductCreateViewModel = (category: Category) => {
         setValues({
             name: '',
             description: '',
-            price: '',
+            price: 0,
             image1: '',
             image2: '',
             image3: '',
-            idCategory: '',
+            id_category: category.id,
         });
     }
 
