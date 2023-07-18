@@ -10,11 +10,13 @@ import { Category } from '../../Domain/entities/Category';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CategoryStackParamList } from './AdminCategoryNavigator';
 import { ProductProvider } from '../context/ProductContext';
+import { AdminProductUpdateScreen } from '../views/admin/product/update/ProductUpdate';
+import { Product } from '../../Domain/entities/Product';
 
 export type ProductStackParamList = {
     AdminProductListScreen: { category: Category},
     AdminProductCreateScreen: { category: Category},
-    // AdminProductUpdateScreen: { product: Product },
+    AdminProductUpdateScreen: { category: Category, product: Product },
 }
 
 const Stack = createNativeStackNavigator<ProductStackParamList>();
@@ -31,7 +33,7 @@ export const AdminProductNavigator = ({navigation, route}: Props) => {
                     options={({ navigation, route }) => (
                         {
                             headerShown: true,
-                            title: 'Productos',
+                            title: `${route.params.category.name}`,
                             headerRight: () => (
                                 <TouchableOpacity onPress={() => navigation.navigate('AdminProductCreateScreen')}>
                                     <Image
@@ -54,14 +56,14 @@ export const AdminProductNavigator = ({navigation, route}: Props) => {
                     }}
                 />
 
-                {/*<Stack.Screen
+                <Stack.Screen
                     name="AdminProductUpdateScreen"
                     component={AdminProductUpdateScreen}
                     options={{
                         headerShown: true,
-                        title: 'Editar categoria',
+                        title: 'Editar producto',
                     }}
-                /> */}
+                />
             </Stack.Navigator>
         </ProductState>
     )

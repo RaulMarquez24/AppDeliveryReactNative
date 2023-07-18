@@ -4,13 +4,15 @@ import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ProductStackParamList } from '../../../../navigator/AdminProductNavigator';
+import { Category } from '../../../../../Domain/entities/Category';
 
 interface Props {
+    category: Category,
     product: Product,
     remove: (product: Product) => void;
 }
 
-export const AdminProductListItem = ({ product, remove }: Props) => {
+export const AdminProductListItem = ({ product, category, remove }: Props) => {
 
     const navigation = useNavigation<StackNavigationProp<ProductStackParamList>>();
 
@@ -31,9 +33,7 @@ export const AdminProductListItem = ({ product, remove }: Props) => {
                 </View>
 
                 <View style={styles.actionContainer}>
-                    <TouchableOpacity
-                    // onPress={() => navigation.navigate('AdminProductUpdateScreen', { product: product })}>
-                    >
+                    <TouchableOpacity onPress={() => navigation.navigate('AdminProductUpdateScreen', {category: category, product: product })}>
                         <Image
                             style={styles.actionImage}
                             source={require('../../../../../../assets/edit.png')}
