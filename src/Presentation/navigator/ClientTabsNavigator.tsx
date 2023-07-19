@@ -15,6 +15,7 @@ export const ClientTabsNavigator = () => {
         component={ClientStackNavigator}
         options={{
           title: 'Categorias',
+          headerShown: false,
           tabBarLabel: 'Categorias',
           tabBarIcon: ({ color }) => (
             <Image

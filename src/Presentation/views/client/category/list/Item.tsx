@@ -16,11 +16,7 @@ export const ClientCategoryListItem = ({ category, height, width, navigation }: 
     return (
         <TouchableOpacity
             onPress={ () => {
-                // if (category.name == 'ADMIN') {
-                //     navigation.replace('AdminTabsNavigator');
-                // }else if (category.name == 'CLIENTE') {
-                //     navigation.replace('ClientTabsNavigator');
-                // }
+                navigation.navigate('ClientProductListScreen', { idCategory: category.id! })
             }}
             style={{ ...styles.container, width: width, height: height }}>
 
