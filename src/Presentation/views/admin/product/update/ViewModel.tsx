@@ -32,12 +32,19 @@ const AdminProductUpdateViewModel = (category: Category, product: Product) => {
         let response = {} as ResponseAPIDelivery;
         if (values.image1?.includes('https://') && values.image2?.includes('https://') && values.image3?.includes('https://')) {
             response = await update(values);
+            setLoading(false);
+            setResponseMessage(response.message)
         } else {
-            response = await updateWithImage(values, files);
-        }
 
-        setLoading(false);
-        setResponseMessage(response.message)
+            if (values.image1?.includes('https://') || values.image2?.includes('https://') || values.image3?.includes('https://')) {
+                setLoading(false);
+                setResponseMessage('Para actualizar el producto, sustituya las 3 fotos actuales o solo modifique nombre, descripción y precio.')
+            } else {
+                response = await updateWithImage(values, files);
+                setLoading(false);
+                setResponseMessage(response.message)
+            }
+        }
     }
 
     const pickImage = async (numberImage: number) => {
