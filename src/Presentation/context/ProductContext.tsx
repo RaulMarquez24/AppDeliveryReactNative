@@ -5,16 +5,15 @@ import { createContext, useEffect, useState } from 'react';
 import { GetProductsByCategoryUseCase } from "../../Domain/useCases/product/GetProductsByCategory";
 import { CreateProductUseCase } from "../../Domain/useCases/product/CreateProduct";
 import { DeleteProductUseCase } from "../../Domain/useCases/product/DeleteProduct";
-// import { UpdateProductUseCase } from "../../Domain/useCases/product/UpdateProduct";
-// import { UpdateWithImageProductUseCase } from "../../Domain/useCases/product/UpdateWithImageProduct";
-// import { DeleteProductUseCase } from "../../Domain/useCases/product/DeleteProduct";
+import { UpdateProductUseCase } from "../../Domain/useCases/product/UpdateProduct";
+import { UpdateWithImageProductUseCase } from "../../Domain/useCases/product/UpdateWithImageProduct";
 
 export interface ProductContextProps {
     products: Product[],
     getProducts(idCategory: string): Promise<void>,
-    create(product: Product, file: ImagePicker.ImagePickerAsset[]): Promise<ResponseAPIDelivery>,
-    // updateWithImage(product: Product, file: ImagePicker.ImagePickerAsset): Promise<ResponseAPIDelivery>,
-    // update(product: Product): Promise<ResponseAPIDelivery>,
+    create(product: Product, files: ImagePicker.ImagePickerAsset[]): Promise<ResponseAPIDelivery>,
+    updateWithImage(product: Product, files: ImagePicker.ImagePickerAsset[]): Promise<ResponseAPIDelivery>,
+    update(product: Product): Promise<ResponseAPIDelivery>,
     remove(product: Product): Promise<ResponseAPIDelivery>,
 }
 
@@ -41,17 +40,17 @@ export const ProductProvider = ({ children }: any) => {
         return response;
     }
 
-    // const update = async (product: Product): Promise<ResponseAPIDelivery> => {
-    //     const response = await UpdateProductUseCase(product);
-    //     getProducts();
-    //     return response;
-    // }
+    const update = async (product: Product): Promise<ResponseAPIDelivery> => {
+        const response = await UpdateProductUseCase(product);
+        getProducts(product.id_category!);
+        return response;
+    }
 
-    // const updateWithImage = async (product: Product, file: ImagePicker.ImagePickerAsset): Promise<ResponseAPIDelivery> => {
-    //     const response = await UpdateWithImageProductUseCase(product, file);
-    //     getProducts();
-    //     return response;
-    // }
+    const updateWithImage = async (product: Product, files: ImagePicker.ImagePickerAsset[]): Promise<ResponseAPIDelivery> => {
+        const response = await UpdateWithImageProductUseCase(product, files);
+        getProducts(product.id_category!);
+        return response;
+    }
 
     const remove = async (product: Product): Promise<ResponseAPIDelivery> => {
         const response = await DeleteProductUseCase(product);
@@ -64,8 +63,8 @@ export const ProductProvider = ({ children }: any) => {
             products,
             getProducts,
             create,
-            // updateWithImage,
-            // update,
+            updateWithImage,
+            update,
             remove
         }}>
             {children}

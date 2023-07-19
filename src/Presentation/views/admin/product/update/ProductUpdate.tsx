@@ -14,13 +14,13 @@ interface Props extends StackScreenProps<ProductStackParamList, 'AdminProductUpd
 export const AdminProductUpdateScreen = ({ navigation, route }: Props) => {
 
     const { category, product } = route.params;
-    const { name, description, price, image1, image2, image3, responseMessage, loading, takePhoto, pickImage, onChange, createProduct } = useViewModel(category, product);
+    const { name, description, price, image1, image2, image3, responseMessage, loading, takePhoto, pickImage, onChange, updateProduct } = useViewModel(category, product);
     const [modalVisible, setModalVisible] = useState(false);
     const [numberImage, setNumberImage] = useState(1);
 
     useEffect(() => {
         if (responseMessage !== '') {
-            Alert.alert('Crear categoria', responseMessage);
+            Alert.alert('Editar producto', responseMessage);
         }
     }, [responseMessage])
 
@@ -119,8 +119,8 @@ export const AdminProductUpdateScreen = ({ navigation, route }: Props) => {
 
                     <View style={styles.buttonContainer}>
                         <RoundedButton
-                            text='CREAR PRODUCTO'
-                            onPress={() => { createProduct() }}
+                            text='EDITAR PRODUCTO'
+                            onPress={() => { updateProduct() }}
                         />
                     </View>
 

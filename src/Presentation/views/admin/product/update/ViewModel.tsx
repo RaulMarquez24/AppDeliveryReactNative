@@ -5,6 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Category } from '../../../../../Domain/entities/Category';
 import { ProductContext } from '../../../../context/ProductContext';
 import { Product } from '../../../../../Domain/entities/Product';
+import { ResponseAPIDelivery } from '../../../../../Data/sources/remote/models/ResponseApiDelivery';
 
 const AdminProductUpdateViewModel = (category: Category, product: Product) => {
 
@@ -14,25 +15,29 @@ const AdminProductUpdateViewModel = (category: Category, product: Product) => {
     const [file1, setFile1] = useState<ImagePicker.ImagePickerAsset>()
     const [file2, setFile2] = useState<ImagePicker.ImagePickerAsset>()
     const [file3, setFile3] = useState<ImagePicker.ImagePickerAsset>()
-    const { create } = useContext(ProductContext);
+    const { update, updateWithImage } = useContext(ProductContext);
 
     const onChange = (property: string, value: any) => {
         setValues({ ...values, [property]: value });
     }
 
-    const createProduct = async () => {
-        console.log('VALUES FORM: ', JSON.stringify(values));
+    const updateProduct = async () => {
+
         let files = [];
         files.push(file1!);
         files.push(file2!);
         files.push(file3!);
         setLoading(true);
-        const response = await create(product, files);
+
+        let response = {} as ResponseAPIDelivery;
+        if (values.image1?.includes('https://') && values.image2?.includes('https://') && values.image3?.includes('https://')) {
+            response = await update(values);
+        } else {
+            response = await updateWithImage(values, files);
+        }
+
         setLoading(false);
         setResponseMessage(response.message)
-        // if (response.success) {
-        //     resetForm();
-        // }
     }
 
     const pickImage = async (numberImage: number) => {
@@ -79,18 +84,6 @@ const AdminProductUpdateViewModel = (category: Category, product: Product) => {
         }
     }
 
-    // const resetForm = async () => {
-    //     setValues({
-    //         name: '',
-    //         description: '',
-    //         price: 0,
-    //         image1: '',
-    //         image2: '',
-    //         image3: '',
-    //         id_category: category.id,
-    //     });
-    // }
-
     return {
         ...values,
         onChange,
@@ -98,7 +91,7 @@ const AdminProductUpdateViewModel = (category: Category, product: Product) => {
         pickImage,
         loading,
         responseMessage,
-        createProduct
+        updateProduct
     }
 }
 
