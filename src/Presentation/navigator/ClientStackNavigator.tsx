@@ -3,40 +3,51 @@ import { ClientCategoryListScreen } from "../views/client/category/list/Category
 import { ClientProductListScreen } from "../views/client/product/list/ProductList";
 import { ClientProductDetailScreen } from "../views/client/product/detail/ProductDetail";
 import { Product } from "../../Domain/entities/Product";
+import { ShoppingBagProvider } from '../context/ShoppingBagContext';
 
 export type ClientStackParamList = {
     ClientCategoryListScreen: undefined,
     ClientProductListScreen: { idCategory: string },
-    ClientProductDetailScreen: {product: Product},
+    ClientProductDetailScreen: { product: Product },
 }
 
 const Stack = createNativeStackNavigator<ClientStackParamList>();
 
 export const ClientStackNavigator = () => {
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen
-                name='ClientCategoryListScreen'
-                component={ClientCategoryListScreen}
-                options={{
-                    title: 'Categorias',
-                    headerShown: true,
-                }}
-            />
+        <ShoppingBagState>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+                <Stack.Screen
+                    name='ClientCategoryListScreen'
+                    component={ClientCategoryListScreen}
+                    options={{
+                        title: 'Categorias',
+                        headerShown: true,
+                    }}
+                />
 
-            <Stack.Screen
-                name='ClientProductListScreen'
-                component={ClientProductListScreen}
-                options={{
-                    title: 'Productos',
-                    headerShown: true
-                }}
-            />
+                <Stack.Screen
+                    name='ClientProductListScreen'
+                    component={ClientProductListScreen}
+                    options={{
+                        title: 'Productos',
+                        headerShown: true
+                    }}
+                />
 
-            <Stack.Screen
-                name='ClientProductDetailScreen'
-                component={ClientProductDetailScreen}
-            />
-        </Stack.Navigator>
+                <Stack.Screen
+                    name='ClientProductDetailScreen'
+                    component={ClientProductDetailScreen}
+                />
+            </Stack.Navigator>
+        </ShoppingBagState>
+    )
+}
+
+const ShoppingBagState = ({ children }: any) => {
+    return (
+        <ShoppingBagProvider>
+            {children}
+        </ShoppingBagProvider>
     )
 }

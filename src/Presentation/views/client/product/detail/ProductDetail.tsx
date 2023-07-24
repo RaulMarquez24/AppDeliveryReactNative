@@ -17,7 +17,7 @@ export const ClientProductDetailScreen = ({ navigation, route }: Props) => {
     const height = Dimensions.get('window').height;
     // const [mode, setMode] = useState<any>('horizontal-stack');
     // const [snapDirection, setSnapDirection] = useState<'left' | 'right'>('left');
-    const { productImageList, quantity, price, addItem, removeItem } = useViewModel(product);
+    const { shoppingBag, productImageList, quantity, price, addToBag, addItem, removeItem } = useViewModel(product);
 
     return (
         <View style={styles.container}>
@@ -79,7 +79,7 @@ export const ClientProductDetailScreen = ({ navigation, route }: Props) => {
                     </TouchableOpacity>
 
                     <View style={styles.buttonAdd}>
-                        <RoundedButton text='AGREGAR' onPress={() => { }} />
+                        <RoundedButton text='AÑADIR AL CARRITO' onPress={() => { addToBag() }} />
                     </View>
                 </View>
             </View>
