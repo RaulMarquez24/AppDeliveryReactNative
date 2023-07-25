@@ -5,7 +5,9 @@ import { SaveShoppingBagUseCase } from "../../Domain/useCases/shopping_bag/SaveS
 
 export interface ShoppingBagContextProps {
     shoppingBag: Product[],
+    total: number,
     getShoppingBag(): Promise<void>,
+    getTotal(): Promise<void>,
     saveItem(product: Product): Promise<void>,
     deleteItem(product: Product): Promise<void>,
 }
@@ -14,15 +16,29 @@ export const ShoppingBagContext = createContext({} as ShoppingBagContextProps);
 
 export const ShoppingBagProvider = ( {children}: any ) => {
 
-    const [shoppingBag, setShoppingBag] = useState<Product[]>([])
+    const [shoppingBag, setShoppingBag] = useState<Product[]>([]);
+    const [total, setTotal] = useState(0.0);
 
     useEffect(() => {
         getShoppingBag();
     }, [])
 
+    useEffect(() => {
+        getTotal();
+    }, [shoppingBag])
+
     const getShoppingBag = async(): Promise<void> => {
         const result = await GetShoppingBagUseCase();
         setShoppingBag(result);
+    }
+
+    const getTotal = async(): Promise<void> => {
+        setTotal(0);
+        let totalPrice = 0;
+        shoppingBag.forEach(product => {
+            totalPrice = totalPrice + (product.quantity! * product.price);
+        });
+        setTotal(totalPrice);
     }
 
     const saveItem = async (product: Product): Promise<void> => {
@@ -39,7 +55,7 @@ export const ShoppingBagProvider = ( {children}: any ) => {
 
     const deleteItem = async (product: Product): Promise<void> => {
         const index = shoppingBag.findIndex((p) => p.id == product.id);
-        shoppingBag.splice(index);
+        shoppingBag.splice(index, 1);
 
         await SaveShoppingBagUseCase(shoppingBag);
         getShoppingBag();
@@ -48,7 +64,9 @@ export const ShoppingBagProvider = ( {children}: any ) => {
     return (
         <ShoppingBagContext.Provider value={{
             shoppingBag,
+            total,
             getShoppingBag,
+            getTotal,
             saveItem,
             deleteItem
         }}>

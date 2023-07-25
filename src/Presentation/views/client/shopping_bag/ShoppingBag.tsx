@@ -7,7 +7,7 @@ import { RoundedButton } from '../../../components/RoundedButton';
 
 export const ClientShoppingBagScreen = () => {
 
-    const { shoppingBag } = useViewModel();
+    const { shoppingBag, total, addItem, subtractItem, deleteItem } = useViewModel();
 
     return (
         <View style={styles.container}>
@@ -17,16 +17,16 @@ export const ClientShoppingBagScreen = () => {
                 renderItem={({ item }) => 
                     <ShoppingBagItem 
                         product={item}
-                        addItem={() => {}}
-                        subtractItem={() => {}}
-                        deleteItem={() => {}}
+                        addItem={ addItem }
+                        subtractItem={ subtractItem }
+                        deleteItem={ deleteItem }
                     />}
             />
 
             <View style={styles.totalToPay}>
                 <View style={styles.totalInfo}>
                     <Text style={styles.totalText}>Total</Text>
-                    <Text>0€</Text>
+                    <Text>{ total }€</Text>
                 </View>
                 <View style={styles.buttonAdd}>
                     <RoundedButton text='CONFIRMAR ORDEN' onPress={() => {}}/>
