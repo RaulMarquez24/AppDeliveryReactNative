@@ -27,13 +27,32 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.raulmarquez.appdeliveryreactnative",
+      "config": {
+        "googleMapsApiKey": "AIzaSyBIlAnc-VX9LHUi-feesrk58rd0neossHE"
+      },
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "location",
+          "fetch"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.raulmarquez.appdeliveryreactnative",
+      "config": {
+        "googleMaps": {
+          "ApiKey": "AIzaSyBIlAnc-VX9LHUi-feesrk58rd0neossHE"
+        }
+      },
+      "permission": [
+        "ACCESS_BACKGROUND_LOCATION"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
