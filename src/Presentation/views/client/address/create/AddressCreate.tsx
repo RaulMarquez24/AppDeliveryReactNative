@@ -6,10 +6,14 @@ import { CustomTextInput } from '../../../../components/CustomTextInput'
 import { RoundedButton } from '../../../../components/RoundedButton'
 import ModalPickImage from '../../../../components/ModalPickImage'
 import { MyColors, MyStyles } from '../../../../theme/AppTheme';
+import { StackScreenProps } from '@react-navigation/stack'
+import { ClientStackParamList } from '../../../../navigator/ClientStackNavigator'
 
-export const ClientAddressCreateScreen = () => {
+interface Props extends StackScreenProps<ClientStackParamList, 'ClientAddressCreateScreen'>{};
 
-    const { address, city, refPoint, responseMessage, loading, onChange, createCategory } = useViewModel();
+export const ClientAddressCreateScreen = ({navigation, route}: Props) => {
+
+    const { address, zipCode, city, refPoint, responseMessage, loading, onChange, createCategory } = useViewModel();
     const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
@@ -32,8 +36,8 @@ export const ClientAddressCreateScreen = () => {
 
             <View style={styles.form}>
                 <CustomTextInput
-                    placeholder='Nombre de la dirección'
-                    image={require('../../../../../../assets/categories.png')}
+                    placeholder='Calle, numero, puerta...'
+                    image={require('../../../../../../assets/location.png')}
                     keyboardType='default'
                     property='address'
                     value={address}
@@ -41,22 +45,35 @@ export const ClientAddressCreateScreen = () => {
                 />
 
                 <CustomTextInput
-                    placeholder='Barrio'
-                    image={require('../../../../../../assets/description.png')}
+                    placeholder='Código postal'
+                    image={require('../../../../../../assets/zip_code.png')}
+                    keyboardType='default'
+                    property='zipCode'
+                    value={zipCode}
+                    onChangeText={onChange}
+                />
+
+                <CustomTextInput
+                    placeholder='Ciudad'
+                    image={require('../../../../../../assets/neighborhood.png')}
                     keyboardType='default'
                     property='city'
                     value={city}
                     onChangeText={onChange}
                 />
 
-                <CustomTextInput
-                    placeholder='Punto de referencia'
-                    image={require('../../../../../../assets/description.png')}
-                    keyboardType='default'
-                    property='refPoint'
-                    value={refPoint}
-                    onChangeText={onChange}
-                />
+                <TouchableOpacity onPress={() => navigation.navigate('ClientAddressMapScreen')}>
+                    <CustomTextInput
+                        placeholder='Punto de referencia'
+                        image={require('../../../../../../assets/ref_point.png')}
+                        keyboardType='default'
+                        property='refPoint'
+                        value={refPoint}
+                        onChangeText={onChange}
+                        editable={false}
+                    />
+                </TouchableOpacity>
+
             </View>
             <View style={styles.buttonContainer}>
                 <RoundedButton
