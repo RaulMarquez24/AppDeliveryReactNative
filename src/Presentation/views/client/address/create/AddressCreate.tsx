@@ -9,7 +9,7 @@ import { MyColors, MyStyles } from '../../../../theme/AppTheme';
 
 export const ClientAddressCreateScreen = () => {
 
-    const { address, neightborhood, refPoint, responseMessage, loading, onChange, createCategory } = useViewModel();
+    const { address, city, refPoint, responseMessage, loading, onChange, createCategory } = useViewModel();
     const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
@@ -44,8 +44,8 @@ export const ClientAddressCreateScreen = () => {
                     placeholder='Barrio'
                     image={require('../../../../../../assets/description.png')}
                     keyboardType='default'
-                    property='neightborhood'
-                    value={neightborhood}
+                    property='city'
+                    value={city}
                     onChangeText={onChange}
                 />
 

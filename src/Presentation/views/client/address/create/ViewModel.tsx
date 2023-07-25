@@ -7,7 +7,7 @@ const ClientAddressCreateViewModel = () => {
 
     const [values, setValues] = useState({
         address: '',
-        neightborhood: '',
+        city: '',
         refPoint: '',
     });
 
