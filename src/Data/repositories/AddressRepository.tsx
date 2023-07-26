@@ -33,4 +33,21 @@ export class AddressRepositoryImpl implements AddressRepository {
         }
     }
 
+    async remove(id: string): Promise<ResponseAPIDelivery> {
+        
+        try {
+            
+            const response = await ApiDelivery.delete<ResponseAPIDelivery>(`/address/delete/${id}`);
+            return Promise.resolve(response.data);
+
+        } catch (error) {
+            let e = (error as AxiosError);
+            console.log('Error: ' + JSON.stringify(e.response?.data));
+            const apiError: ResponseAPIDelivery = JSON.parse(JSON.stringify(e.response?.data));
+            return Promise.resolve(apiError);
+
+        }
+
+    }
+
 }

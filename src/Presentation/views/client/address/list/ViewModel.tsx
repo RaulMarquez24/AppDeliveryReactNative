@@ -1,13 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { GetByUserAddressUseCase } from '../../../../../Domain/useCases/address/GetByUserAddress';
+import { DeleteAddressUseCase } from '../../../../../Domain/useCases/address/DeleteAddress';
 import { UserContext } from '../../../../context/UserContext';
 import { Address } from '../../../../../Domain/entities/Address';
 
 const ClientAddressListViewModel = () => {
 
     const [address, setAddress] = useState<Address[]>([])
-    const { user, saveUserSession, getUserSession } = useContext(UserContext);
+    const { user, saveUserSession } = useContext(UserContext);
     const [checked, setChecked] = useState('')
+    const [responseMessage, setResponseMessage] = useState('');
+
 
     useEffect(() => {
         getAddress();
@@ -28,11 +31,21 @@ const ClientAddressListViewModel = () => {
         setAddress(result);
     }
 
+    const deleteAddress = async (idAddress: string) => {
+        const result = await DeleteAddressUseCase(idAddress);
+        setResponseMessage(result.message);
+        user.address = undefined;
+        saveUserSession(user);
+        getAddress();
+    }
+
     return {
         address,
         checked,
+        responseMessage,
         getAddress,
-        changeRadioValue
+        changeRadioValue,
+        deleteAddress,
     }
 }
 

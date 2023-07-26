@@ -6,7 +6,6 @@ export interface AddressRepository {
 
     create(address: Address): Promise<ResponseAPIDelivery>;
     getByUser(idUser: string): Promise<Address[]>;
-    // updateWithImage(address: Address, file: ImagePicker.ImagePickerAsset): Promise<ResponseAPIDelivery>;
     // update(address: Address): Promise<ResponseAPIDelivery>;
-    // remove(id: string): Promise<ResponseAPIDelivery>;
+    remove(id: string): Promise<ResponseAPIDelivery>;
 }

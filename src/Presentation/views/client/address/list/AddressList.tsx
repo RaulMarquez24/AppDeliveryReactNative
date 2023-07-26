@@ -1,11 +1,17 @@
 import React, { useEffect } from 'react'
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList, Alert } from 'react-native'
 import useViewModel from './ViewModel'
 import { AddressListitem } from './item';
 
 export const ClientAddressListScreen = () => {
 
-    const { address, checked, getAddress, changeRadioValue } = useViewModel();
+    const { address, checked, responseMessage, getAddress, changeRadioValue, deleteAddress } = useViewModel();
+
+    useEffect(() => {
+        if (responseMessage !== '') {
+            Alert.alert('Borrar direccion', responseMessage);
+        }
+    }, [responseMessage])
 
     return (
         <View style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -17,6 +23,7 @@ export const ClientAddressListScreen = () => {
                         address={item}
                         checked={checked}
                         changeRadioValue={changeRadioValue}
+                        remove={deleteAddress}
                     />}
             />
         </View>

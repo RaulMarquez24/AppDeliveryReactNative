@@ -7,7 +7,7 @@ import { CategoryStackParamList } from '../../../../navigator/AdminCategoryNavig
 
 interface Props {
     category: Category,
-    remove: (id: string) => void;
+    remove: (id: string) => void,
 }
 
 export const AdminCategoryListItem = ({ category, remove }: Props) => {
