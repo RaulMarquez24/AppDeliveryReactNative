@@ -10,9 +10,9 @@ import { Category } from '../../../../../Domain/entities/Category';
 import { StackScreenProps } from '@react-navigation/stack'
 import { CategoryStackParamList } from '../../../../navigator/AdminCategoryNavigator';
 
-interface Props extends StackScreenProps<CategoryStackParamList, 'AdminCategoryUpdateScreen'>{};
+interface Props extends StackScreenProps<CategoryStackParamList, 'AdminCategoryUpdateScreen'> { };
 
-export const AdminCategoryUpdateScreen = ({navigation, route}: Props) => {
+export const AdminCategoryUpdateScreen = ({ navigation, route }: Props) => {
 
     const { category } = route.params;
     const { name, description, image, responseMessage, loading, takePhoto, pickImage, onChange, updateCategory } = useViewModel(category);
@@ -59,13 +59,13 @@ export const AdminCategoryUpdateScreen = ({navigation, route}: Props) => {
                     value={description}
                     onChangeText={onChange}
                 />
-                </View>
                 <View style={styles.buttonContainer}>
                     <RoundedButton
                         text='EDITAR CATEGORIA'
                         onPress={() => { updateCategory() }}
                     />
                 </View>
+            </View>
 
             <ModalPickImage
                 openGallery={pickImage}

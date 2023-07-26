@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native'
+import { View, Text, TouchableOpacity, Image, ActivityIndicator, Alert, ScrollView } from 'react-native'
 import styles from './Styles'
 import useViewModel from './ViewModel'
 import { CustomTextInput } from '../../../../components/CustomTextInput'
@@ -36,33 +36,33 @@ export const AdminCategoryCreateScreen = () => {
             </TouchableOpacity>
 
             <View style={styles.form}>
-                <CustomTextInput
-                    placeholder='Nombre de la categoria'
-                    image={require('../../../../../../assets/categories.png')}
-                    keyboardType='default'
-                    property='name'
-                    value={name}
-                    onChangeText={onChange}
-                />
-
-                <CustomTextInput
-                    placeholder='Descripción'
-                    image={require('../../../../../../assets/description.png')}
-                    keyboardType='default'
-                    property='description'
-                    value={description}
-                    onChangeText={onChange}
-                />
-                </View>
-                <View style={styles.buttonContainer}>
-                    <RoundedButton
-                        text='CREAR CATEGORIA'
-                        onPress={() => { createCategory() }}
+                {/* <ScrollView> */}
+                    <CustomTextInput
+                        placeholder='Nombre de la categoria'
+                        image={require('../../../../../../assets/categories.png')}
+                        keyboardType='default'
+                        property='name'
+                        value={name}
+                        onChangeText={onChange}
                     />
-                </View>
-            
 
+                    <CustomTextInput
+                        placeholder='Descripción'
+                        image={require('../../../../../../assets/description.png')}
+                        keyboardType='default'
+                        property='description'
+                        value={description}
+                        onChangeText={onChange}
+                    />
 
+                    <View style={styles.buttonContainer}>
+                        <RoundedButton
+                            text='CREAR CATEGORIA'
+                            onPress={() => { createCategory() }}
+                        />
+                    </View>
+                {/* </ScrollView> */}
+            </View>
 
             <ModalPickImage
                 openGallery={pickImage}

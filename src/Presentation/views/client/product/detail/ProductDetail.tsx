@@ -28,7 +28,7 @@ export const ClientProductDetailScreen = ({ navigation, route }: Props) => {
                     height={height}
                     autoPlay={true}
                     data={productImageList}
-                    autoPlayInterval={5000}
+                    autoPlayInterval={2500}
                     scrollAnimationDuration={1000}
                     // onSnapToItem={(index) => console.log('current index:', index)}
                     renderItem={({ item }) =>

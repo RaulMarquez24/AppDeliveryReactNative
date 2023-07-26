@@ -15,7 +15,7 @@ const HomeViewModel = () => {
 
     // const { user, getUserSession } = useUserLocal();
     const { user, saveUserSession } = useContext( UserContext );
-    console.log('USUARIO DE SESION: '+ JSON.stringify(user));
+    // console.log('USUARIO DE SESION: '+ JSON.stringify(user));
     
     const onChange = (property: string, value: any) => {
         setValues({ ...values, [property]: value });

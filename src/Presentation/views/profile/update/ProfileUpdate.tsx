@@ -31,7 +31,7 @@ export const ProfileUpdateScreen = ({ navigation, route }: Props) => {
 
     return (
         <View style={styles.container}>
-            <ActivityIndicator style={styles.loading} size="large" color={MyColors.primary} />
+            {/* <ActivityIndicator style={styles.loading} size="large" color={MyColors.primary} /> */}
 
             <Image source={require('../../../../../assets/city.jpg')} style={styles.imageBackground} />
 

@@ -41,6 +41,7 @@ export const ClientAddressCreateScreen = ({ navigation, route }: Props) => {
 
             <View style={styles.form}>
                 <ScrollView>
+                    <Text style={{marginTop: 20, fontSize: 18}}>Datos de la dirección</Text>
                     <CustomTextInput
                         placeholder='Calle, numero, puerta...'
                         image={require('../../../../../../assets/location.png')}
@@ -79,13 +80,15 @@ export const ClientAddressCreateScreen = ({ navigation, route }: Props) => {
                             editable={false}
                         />
                     </TouchableOpacity>
+
+                    <View style={styles.buttonContainer}>
+                        <RoundedButton
+                            text='CREAR DIRECCION'
+                            onPress={() => { createAddress() }}
+                        />
+                    </View>
+
                 </ScrollView>
-            </View>
-            <View style={styles.buttonContainer}>
-                <RoundedButton
-                    text='CREAR DIRECCION'
-                    onPress={() => { createAddress() }}
-                />
             </View>
 
             {

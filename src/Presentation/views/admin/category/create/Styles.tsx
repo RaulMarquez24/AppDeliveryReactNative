@@ -24,10 +24,11 @@ const AdminCategoryCreateStyles = StyleSheet.create({
         paddingHorizontal: 30
     },
     buttonContainer: {
-        position: 'absolute',
-        bottom: 20,
-        left: 20,
-        right: 20
+        // position: 'absolute',
+        // bottom: 20,
+        // left: 20,
+        // right: 20
+        marginTop: '70%',
     },
     
 });
