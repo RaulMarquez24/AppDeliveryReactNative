@@ -13,15 +13,14 @@ interface Props extends StackScreenProps<ClientStackParamList, 'ClientAddressCre
 
 export const ClientAddressCreateScreen = ({navigation, route}: Props) => {
 
-    const { address, zipCode, city, refPoint, responseMessage, loading, onChange, createCategory } = useViewModel();
+    const { address, zip_code, city, refPoint, responseMessage, loading, onChange, createAddress, onChangeRefPoint } = useViewModel();
     const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
         if (route.params?.refPoint) {
-            onChange('refPoint', route.params?.refPoint);
+            onChangeRefPoint(route.params?.refPoint, route.params?.latitude, route.params?.longitude);
         }
     }, [route.params?.refPoint])
-
 
     useEffect(() => {
         if (responseMessage !== '') {
@@ -54,8 +53,8 @@ export const ClientAddressCreateScreen = ({navigation, route}: Props) => {
                     placeholder='Código postal'
                     image={require('../../../../../../assets/zip_code.png')}
                     keyboardType='default'
-                    property='zipCode'
-                    value={zipCode}
+                    property='zip_code'
+                    value={zip_code === 0 ? '' : zip_code.toString()} // Verifica si zip_code es igual a 0 y establece una cadena vacía en su lugar
                     onChangeText={onChange}
                 />
 
@@ -84,7 +83,7 @@ export const ClientAddressCreateScreen = ({navigation, route}: Props) => {
             <View style={styles.buttonContainer}>
                 <RoundedButton
                     text='CREAR DIRECCION'
-                    onPress={() => { createCategory() }}
+                    onPress={() => { createAddress() }}
                 />
             </View>
 

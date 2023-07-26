@@ -1,42 +1,58 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import * as ImagePicker from 'expo-image-picker';
-import { CreateCategoryUseCase } from '../../../../../Domain/useCases/category/CreateCategory'
 import { CategoryContext } from '../../../../context/CategoryContext';
+import { CreateAddressUseCase } from '../../../../../Domain/useCases/address/CreateAddress';
+import { UserContext } from '../../../../context/UserContext';
 
 const ClientAddressCreateViewModel = () => {
 
     const [values, setValues] = useState({
         address: '',
-        zipCode: '',
+        zip_code: 0,
         city: '',
         refPoint: '',
+        lat: 0.0,
+        lng: 0.0,
+        id_user: '',
     });
 
     const [responseMessage, setResponseMessage] = useState('');
     const [loading, setLoading] = useState(false);
-    const [file, setFile] = useState<ImagePicker.ImagePickerAsset>()
-    const { create } = useContext(CategoryContext);
+    const { user } = useContext(UserContext);
+
+    useEffect(() => {
+        if (user.id != '') {
+            onChange('id_user', user.id);
+        }
+    }, [user])
 
     const onChange = (property: string, value: any) => {
         setValues({ ...values, [property]: value });
     }
 
-    const createCategory = async () => {
-        // setLoading(true);
-        // const response = await create(values, file!);
-        // setLoading(false);
-        // setResponseMessage(response.message)
-        // resetForm();
+    const onChangeRefPoint = (refPoint: string, lat: number, lng: number) => {
+        setValues({ ...values, refPoint: refPoint, lat: lat, lng: lng});
     }
 
-    
+    const createAddress = async () => {
+        console.log('FORMULARIO: ' + JSON.stringify(values));
+        setLoading(true);
+        const response = await CreateAddressUseCase(values);
+        setLoading(false);
+        setResponseMessage(response.message)
+        resetForm();
+    }
 
     const resetForm = async () => {
-        // setValues({
-        //     name: '',
-        //     description: '',
-        //     image: '',
-        // });
+        setValues({
+            address: '',
+            zip_code: 0,
+            city: '',
+            refPoint: '',
+            lat: 0.0,
+            lng: 0.0,
+            id_user: user.id!,
+        });
     }
 
     return {
@@ -44,7 +60,8 @@ const ClientAddressCreateViewModel = () => {
         onChange,
         loading,
         responseMessage,
-        createCategory
+        createAddress,
+        onChangeRefPoint
     }
 }
 
