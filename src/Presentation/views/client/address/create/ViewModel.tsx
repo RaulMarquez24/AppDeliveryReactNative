@@ -18,7 +18,7 @@ const ClientAddressCreateViewModel = () => {
 
     const [responseMessage, setResponseMessage] = useState('');
     const [loading, setLoading] = useState(false);
-    const { user } = useContext(UserContext);
+    const { user, saveUserSession, getUserSession } = useContext(UserContext);
 
     useEffect(() => {
         if (user.id != '') {
@@ -39,8 +39,14 @@ const ClientAddressCreateViewModel = () => {
         setLoading(true);
         const response = await CreateAddressUseCase(values);
         setLoading(false);
-        setResponseMessage(response.message)
-        resetForm();
+        setResponseMessage(response.message);
+        if (response.success) {
+            resetForm();
+            user.address = values;
+            user.address.id = response.data;
+            await saveUserSession(user);
+            getUserSession();
+        }
     }
 
     const resetForm = async () => {

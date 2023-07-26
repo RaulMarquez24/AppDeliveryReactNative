@@ -5,7 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 export interface AddressRepository {
 
     create(address: Address): Promise<ResponseAPIDelivery>;
-    // getAll(): Promise<Address[]>;
+    getByUser(idUser: string): Promise<Address[]>;
     // updateWithImage(address: Address, file: ImagePicker.ImagePickerAsset): Promise<ResponseAPIDelivery>;
     // update(address: Address): Promise<ResponseAPIDelivery>;
     // remove(id: string): Promise<ResponseAPIDelivery>;

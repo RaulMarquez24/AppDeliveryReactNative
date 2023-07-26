@@ -20,4 +20,17 @@ export class AddressRepositoryImpl implements AddressRepository {
         }
     }
 
+    async getByUser(idUser: string): Promise<Address[]> {
+        try {
+
+            const response = await ApiDelivery.get<Address[]>(`/address/findByUser/${idUser}`);
+            return Promise.resolve(response.data)
+
+        } catch (error) {
+            let e = (error as AxiosError);
+            console.log('Error: ' + JSON.stringify(e.response?.data));
+            return Promise.resolve([]);
+        }
+    }
+
 }
