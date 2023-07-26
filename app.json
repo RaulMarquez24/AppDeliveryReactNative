@@ -16,6 +16,12 @@
           "//": "Disables the microphone permission",
           "microphonePermission": false
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
       ]
     ],
     "splash": {
@@ -51,7 +57,10 @@
         }
       },
       "permission": [
-        "ACCESS_BACKGROUND_LOCATION"
+        "ACCESS_BACKGROUND_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "FOREGROUND_SERVICE"
       ]
     },
     "web": {

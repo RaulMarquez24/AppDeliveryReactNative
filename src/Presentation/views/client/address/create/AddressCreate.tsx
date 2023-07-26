@@ -17,11 +17,17 @@ export const ClientAddressCreateScreen = ({navigation, route}: Props) => {
     const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
+        if (route.params?.refPoint) {
+            onChange('refPoint', route.params?.refPoint);
+        }
+    }, [route.params?.refPoint])
+
+
+    useEffect(() => {
         if (responseMessage !== '') {
             Alert.alert('Crear categoria', responseMessage);
         }
     }, [responseMessage])
-
 
     return (
         <View style={styles.container}>
