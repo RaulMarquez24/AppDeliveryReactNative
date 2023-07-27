@@ -3,11 +3,15 @@ import { GetByUserAddressUseCase } from '../../../../../Domain/useCases/address/
 import { DeleteAddressUseCase } from '../../../../../Domain/useCases/address/DeleteAddress';
 import { UserContext } from '../../../../context/UserContext';
 import { Address } from '../../../../../Domain/entities/Address';
+import { CreateOrderUseCase } from '../../../../../Domain/useCases/order/CreateOrder';
+import { Order } from '../../../../../Domain/entities/Order';
+import { ShoppingBagContext } from '../../../../context/ShoppingBagContext';
 
 const ClientAddressListViewModel = () => {
 
     const [address, setAddress] = useState<Address[]>([])
     const { user, saveUserSession } = useContext(UserContext);
+    const { shoppingBag } = useContext(ShoppingBagContext);
     const [checked, setChecked] = useState('')
     const [responseMessage, setResponseMessage] = useState('');
 
@@ -19,6 +23,15 @@ const ClientAddressListViewModel = () => {
         }
     }, [user])
     
+    const createOrder = async () => {
+        const order: Order = {
+            id_client: user.id!,
+            id_address: user.address?.id!,
+            products: shoppingBag
+        }
+        const result = await CreateOrderUseCase(order);
+        setResponseMessage(result.message);
+    }
 
     const changeRadioValue = (address: Address) => {
         setChecked(address.id!);
@@ -46,6 +59,7 @@ const ClientAddressListViewModel = () => {
         getAddress,
         changeRadioValue,
         deleteAddress,
+        createOrder,
     }
 }
 
