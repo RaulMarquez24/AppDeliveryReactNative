@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, FlatList, Image, Button } from 'react-native';
 import styles from './Styles'
 import useViewModel from './ViewModel'
@@ -13,7 +13,15 @@ interface Props extends StackScreenProps<AdminOrderStackParamList, 'AdminOrderDe
 export const AdminOrderDetailScreen = ({ navigation, route }: Props) => {
 
     const { order } = route.params;
-    const { total } = useViewModel(order);
+    const { total, deliveryMen , getTotal, getDeliveryMen } = useViewModel(order);
+
+    useEffect(() => {
+        if (total == 0.0) {
+            getTotal();
+        }
+        getDeliveryMen();
+    }, [])
+
 
     return (
         <View style={styles.container}>

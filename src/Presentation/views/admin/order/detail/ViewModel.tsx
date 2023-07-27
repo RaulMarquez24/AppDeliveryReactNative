@@ -1,16 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Order } from '../../../../../Domain/entities/Order';
+import { GetDeliveryMenUserUseCase } from '../../../../../Domain/useCases/user/GetDeliveryMenUser';
+import { User } from '../../../../../Domain/entities/User';
 
 const AdminOrderDetailViewModel = (order: Order) => {
 
-    const [total, setTotal] = useState(0.0)
+    const [total, setTotal] = useState(0.0);
+    const [deliveryMen, setDeliveryMen] = useState<User[]>([]);
 
-    useEffect(() => {
-        if (total == 0.0) {
-            getTotal();
-        }
-    }, [])
-
+    const getDeliveryMen = async () => {
+        const result = await GetDeliveryMenUserUseCase();
+        setDeliveryMen(result);
+    }
 
     const getTotal = () => {
 
@@ -23,7 +24,9 @@ const AdminOrderDetailViewModel = (order: Order) => {
 
     return {
         total,
+        deliveryMen,
         getTotal,
+        getDeliveryMen,
     }
 }
 
