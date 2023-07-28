@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View, Text, FlatList, Image, Button } from 'react-native';
+import { View, Text, FlatList, Image, Button, Alert } from 'react-native';
 import styles from './Styles'
 import useViewModel from './ViewModel'
 import { StackScreenProps } from '@react-navigation/stack'
@@ -14,7 +14,13 @@ interface Props extends StackScreenProps<AdminOrderStackParamList, 'AdminOrderDe
 export const AdminOrderDetailScreen = ({ navigation, route }: Props) => {
 
     const { order } = route.params;
-    const { total, deliveryMen, open, value, items, getTotal, getDeliveryMen, setOpen, setValue, setItems, dispatchOrder } = useViewModel(order);
+    const { total, deliveryMen, open, value, items, responseMessage, getTotal, getDeliveryMen, setOpen, setValue, setItems, dispatchOrder, setResponseMessage } = useViewModel(order);
+
+    useEffect(() => {
+        if (responseMessage !== '') {
+            Alert.alert('Nueva Acción', responseMessage);
+        }
+    }, [responseMessage])
 
     useEffect(() => {
         if (total == 0.0) {
@@ -22,7 +28,6 @@ export const AdminOrderDetailScreen = ({ navigation, route }: Props) => {
         }
         getDeliveryMen();
     }, [])
-
 
     return (
         <View style={styles.container}>
@@ -67,23 +72,31 @@ export const AdminOrderDetailScreen = ({ navigation, route }: Props) => {
                     />
                 </View>
 
-                <Text style={styles.deliveries}>REPARTIDORES DISPONIBLES</Text>
-
-                <View style={styles.dropDown}>
-                    <DropDownPicker
-                        open={open}
-                        value={value}
-                        items={items}
-                        setOpen={setOpen}
-                        setValue={setValue}
-                        setItems={setItems}
-                    />
-                </View>
+                {
+                    order.status === 'PAGADO'
+                        ? <View>
+                            <Text style={styles.deliveries}>REPARTIDORES DISPONIBLES</Text>
+                                <View style={styles.dropDown}>
+                                    <DropDownPicker
+                                        open={open}
+                                        value={value}
+                                        items={items}
+                                        setOpen={setOpen}
+                                        setValue={setValue}
+                                        setItems={setItems}
+                                    />
+                                </View>
+                            </View>
+                        : <Text style={styles.deliveries}>REPARTIDOR ASIGNADO: {order.delivery?.name} {order.delivery?.lastname}</Text>
+                }
 
                 <View style={styles.totalInfo}>
                     <Text style={styles.total}>TOTAL: {total}€</Text>
                     <View style={styles.button}>
-                        <RoundedButton text='DESPACHAR ORDEN' onPress={() => dispatchOrder()} />
+                        {
+                            order.status === 'PAGADO' &&
+                            <RoundedButton text='DESPACHAR ORDEN' onPress={() => dispatchOrder()} />
+                        }
                     </View>
                 </View>
             </View>

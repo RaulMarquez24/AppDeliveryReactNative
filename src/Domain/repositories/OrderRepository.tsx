@@ -5,4 +5,5 @@ export interface OrderRepository {
 
     create(order: Order): Promise<ResponseAPIDelivery>;
     getByStatus(status: string): Promise<Order[]>;
+    updateToDispatched(order: Order): Promise<ResponseAPIDelivery>;
 }

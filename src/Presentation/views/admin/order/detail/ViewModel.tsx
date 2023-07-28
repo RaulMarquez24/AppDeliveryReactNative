@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Order } from '../../../../../Domain/entities/Order';
 import { GetDeliveryMenUserUseCase } from '../../../../../Domain/useCases/user/GetDeliveryMenUser';
 import { User } from '../../../../../Domain/entities/User';
+import { UpdateToDispatchedOrderUseCase } from '../../../../../Domain/useCases/order/UpdateToDispatchedOrder';
 
 interface DropDownProps {
     label: string,
@@ -12,6 +13,7 @@ const AdminOrderDetailViewModel = (order: Order) => {
 
     const [total, setTotal] = useState(0.0);
     const [deliveryMen, setDeliveryMen] = useState<User[]>([]);
+    const [responseMessage, setResponseMessage] = useState('')
 
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
@@ -21,9 +23,14 @@ const AdminOrderDetailViewModel = (order: Order) => {
         setDropDownItems();
     }, [deliveryMen])
 
-    const dispatchOrder = () => {
-        console.log('REPARTIDOR SELECCIONADO: ', value);
-        
+    const dispatchOrder = async () => {
+        if (value !== null) {
+            order.id_delivery = value!;
+            const result = await UpdateToDispatchedOrderUseCase(order);
+            setResponseMessage(result.message);
+        }else {
+            setResponseMessage('Selecciona el repartidor');
+        }
     }
 
     const setDropDownItems = () => {
@@ -57,12 +64,14 @@ const AdminOrderDetailViewModel = (order: Order) => {
         open,
         value,
         items,
+        responseMessage,
         getTotal,
         getDeliveryMen,
         setOpen,
         setValue,
         setItems,
         dispatchOrder,
+        setResponseMessage,
     }
 }
 
