@@ -8,11 +8,11 @@ const AdminOrderDetailStyles = StyleSheet.create({
     },
     products:{
         width: '100%',
-        height: '40%',
+        height: '45%',
     },
     info:{
         width: '100%',
-        height: '60%',
+        height: '55%',
         backgroundColor: '#fff',
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
@@ -45,7 +45,7 @@ const AdminOrderDetailStyles = StyleSheet.create({
         fontStyle:'italic',
     },
     totalInfo:{
-        marginTop: 15,
+        marginTop: 25,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -56,6 +56,9 @@ const AdminOrderDetailStyles = StyleSheet.create({
     },
     button:{
         width: '50%',
+    },
+    dropDown:{
+        marginTop: 15,
     },
 });
 

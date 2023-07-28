@@ -7,13 +7,14 @@ import { AdminOrderStackParamList } from '../../../../navigator/AdminOrderStackN
 import { OrderDetailItem } from './Item'
 import { DateFormatter } from '../../../../utils/DateFormatter';
 import { RoundedButton } from '../../../../components/RoundedButton'
+import DropDownPicker from 'react-native-dropdown-picker';
 
 interface Props extends StackScreenProps<AdminOrderStackParamList, 'AdminOrderDetailScreen'> { };
 
 export const AdminOrderDetailScreen = ({ navigation, route }: Props) => {
 
     const { order } = route.params;
-    const { total, deliveryMen , getTotal, getDeliveryMen } = useViewModel(order);
+    const { total, deliveryMen, open, value, items, getTotal, getDeliveryMen, setOpen, setValue, setItems, dispatchOrder } = useViewModel(order);
 
     useEffect(() => {
         if (total == 0.0) {
@@ -68,10 +69,21 @@ export const AdminOrderDetailScreen = ({ navigation, route }: Props) => {
 
                 <Text style={styles.deliveries}>REPARTIDORES DISPONIBLES</Text>
 
+                <View style={styles.dropDown}>
+                    <DropDownPicker
+                        open={open}
+                        value={value}
+                        items={items}
+                        setOpen={setOpen}
+                        setValue={setValue}
+                        setItems={setItems}
+                    />
+                </View>
+
                 <View style={styles.totalInfo}>
                     <Text style={styles.total}>TOTAL: {total}€</Text>
                     <View style={styles.button}>
-                        <RoundedButton text='DESPACHAR ORDEN' onPress={() => {}}/>
+                        <RoundedButton text='DESPACHAR ORDEN' onPress={() => dispatchOrder()} />
                     </View>
                 </View>
             </View>
