@@ -14,13 +14,13 @@ interface Props extends StackScreenProps<DeliveryOrderStackParamList, 'DeliveryO
 export const DeliveryOrderDetailScreen = ({ navigation, route }: Props) => {
 
     const { order } = route.params;
-    const { total, deliveryMen, open, value, items, responseMessage, getTotal, getDeliveryMen, setOpen, setValue, setItems, dispatchOrder, setResponseMessage } = useViewModel(order);
+    const { total, open, value, items, responseMessage, getTotal, setOpen, setValue, setItems, updateToOnTheWayOrder } = useViewModel(order);
 
     useEffect(() => {
         if (responseMessage !== '') {
             if (responseMessage !== 'Selecciona el repartidor') {
-                Alert.alert('Despachar orden', responseMessage,[{ text: 'OK', onPress: () => {navigation.goBack()} }]);
-            }else {
+                Alert.alert('Despachar orden', responseMessage, [{ text: 'OK', onPress: () => { navigation.goBack() } }]);
+            } else {
                 Alert.alert('Despachar orden', responseMessage);
             }
         }
@@ -31,7 +31,6 @@ export const DeliveryOrderDetailScreen = ({ navigation, route }: Props) => {
         if (total == 0.0) {
             getTotal();
         }
-        getDeliveryMen();
     }, [])
 
     return (
@@ -77,30 +76,23 @@ export const DeliveryOrderDetailScreen = ({ navigation, route }: Props) => {
                     />
                 </View>
 
-                {
-                    order.status === 'PAGADO'
-                        ? <View>
-                            <Text style={styles.deliveries}>REPARTIDORES DISPONIBLES</Text>
-                            <View style={styles.dropDown}>
-                                <DropDownPicker
-                                    open={open}
-                                    value={value}
-                                    items={items}
-                                    setOpen={setOpen}
-                                    setValue={setValue}
-                                    setItems={setItems}
-                                />
-                            </View>
-                        </View>
-                        : <Text style={styles.deliveries}>REPARTIDOR ASIGNADO: {order.delivery?.name} {order.delivery?.lastname}</Text>
-                }
+                <View style={styles.infoRow}>
+                    <View style={styles.infoText}>
+                        <Text style={styles.infoTitle}>REPARTIDOR ASIGNADO</Text>
+                        <Text style={styles.infoDescription}>{order.delivery?.name} {order.delivery?.lastname}</Text>
+                    </View>
+                    <Image
+                        style={styles.infoImage}
+                        source={require('../../../../../../assets/my_user.png')}
+                    />
+                </View>
 
                 <View style={styles.totalInfo}>
                     <Text style={styles.total}>TOTAL: {total}€</Text>
                     <View style={styles.button}>
                         {
-                            order.status === 'PAGADO' &&
-                            <RoundedButton text='DESPACHAR ORDEN' onPress={() => dispatchOrder()} />
+                            order.status === 'DESPACHADO' &&
+                            <RoundedButton text='INICIAR ENTREGA' onPress={() => updateToOnTheWayOrder()} />
                         }
                     </View>
                 </View>

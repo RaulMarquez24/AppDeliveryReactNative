@@ -8,11 +8,11 @@ const AdminOrderDetailStyles = StyleSheet.create({
     },
     products:{
         width: '100%',
-        height: '45%',
+        height: '50%',
     },
     info:{
         width: '100%',
-        height: '55%',
+        height: '50%',
         backgroundColor: '#fff',
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,

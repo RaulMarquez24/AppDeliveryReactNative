@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Order } from '../../../../../Domain/entities/Order';
 import { GetDeliveryMenUserUseCase } from '../../../../../Domain/useCases/user/GetDeliveryMenUser';
 import { User } from '../../../../../Domain/entities/User';
-import { UpdateToDispatchedOrderUseCase } from '../../../../../Domain/useCases/order/UpdateToDispatchedOrder';
 import { OrderContext } from '../../../../context/OrderContext';
 
 interface DropDownProps {
@@ -13,42 +12,16 @@ interface DropDownProps {
 const DeliveryOrderDetailViewModel = (order: Order) => {
 
     const [total, setTotal] = useState(0.0);
-    const [deliveryMen, setDeliveryMen] = useState<User[]>([]);
     const [responseMessage, setResponseMessage] = useState('')
-    const {updateToDispatched} = useContext(OrderContext);
+    const { updateToOnTheWay } = useContext(OrderContext);
 
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState<DropDownProps[]>([]);
 
-    useEffect(() => {
-        setDropDownItems();
-    }, [deliveryMen])
-
-    const dispatchOrder = async () => {
-        if (value !== null) {
-            order.id_delivery = value!;
-            const result = await updateToDispatched(order);
-            setResponseMessage(result.message);
-        } else {
-            setResponseMessage('Selecciona el repartidor');
-        }
-    }
-
-    const setDropDownItems = () => {
-        let itemDeliveryMen: DropDownProps[] = [];
-        deliveryMen.forEach(delivery => {
-            itemDeliveryMen.push({
-                label: delivery.name + '' + delivery.lastname,
-                value: delivery.id!
-            })
-        });
-        setItems(itemDeliveryMen);
-    }
-
-    const getDeliveryMen = async () => {
-        const result = await GetDeliveryMenUserUseCase();
-        setDeliveryMen(result);
+    const updateToOnTheWayOrder = async () => {
+        const result = await updateToOnTheWay(order);
+        setResponseMessage(result.message);
     }
 
     const getTotal = () => {
@@ -62,17 +35,15 @@ const DeliveryOrderDetailViewModel = (order: Order) => {
 
     return {
         total,
-        deliveryMen,
         open,
         value,
         items,
         responseMessage,
         getTotal,
-        getDeliveryMen,
         setOpen,
         setValue,
         setItems,
-        dispatchOrder,
+        updateToOnTheWayOrder,
         setResponseMessage,
     }
 }
