@@ -13,7 +13,7 @@ interface Props {
 
 const OrderListView = ({ status }: Props) => {
 
-    const { orders, getOrders } = useViewModel();
+    const { ordersPayed, ordersDispatched, ordersOnTheWay, ordersDelivery, getOrders } = useViewModel();
     const navigation = useNavigation<StackNavigationProp<AdminOrderStackParamList, 'AdminOrderListScreen'>>();
 
     useEffect(() => {
@@ -24,7 +24,17 @@ const OrderListView = ({ status }: Props) => {
     return (
         <View>
             <FlatList
-                data={orders}
+                data={
+                    status === 'PAGADO' 
+                    ? ordersPayed 
+                    : status === 'DESPACHADO' 
+                    ? ordersDispatched
+                    : status === 'EN CAMINO' 
+                    ? ordersOnTheWay
+                    : status === 'ENTREGADO' 
+                    ? ordersDelivery
+                    : [] 
+                }
                 keyExtractor={(item) => item.id!}
                 renderItem={({item}) => <OrderListItem order={item} navigation={navigation}/>}
             />

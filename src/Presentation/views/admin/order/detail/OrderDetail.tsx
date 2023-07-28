@@ -18,9 +18,14 @@ export const AdminOrderDetailScreen = ({ navigation, route }: Props) => {
 
     useEffect(() => {
         if (responseMessage !== '') {
-            Alert.alert('Nueva Acción', responseMessage);
+            if (responseMessage !== 'Selecciona el repartidor') {
+                Alert.alert('Despachar orden', responseMessage,[{ text: 'OK', onPress: () => {navigation.goBack()} }]);
+            }else {
+                Alert.alert('Despachar orden', responseMessage);
+            }
         }
-    }, [responseMessage])
+    }, [responseMessage, navigation]);
+
 
     useEffect(() => {
         if (total == 0.0) {
@@ -76,17 +81,17 @@ export const AdminOrderDetailScreen = ({ navigation, route }: Props) => {
                     order.status === 'PAGADO'
                         ? <View>
                             <Text style={styles.deliveries}>REPARTIDORES DISPONIBLES</Text>
-                                <View style={styles.dropDown}>
-                                    <DropDownPicker
-                                        open={open}
-                                        value={value}
-                                        items={items}
-                                        setOpen={setOpen}
-                                        setValue={setValue}
-                                        setItems={setItems}
-                                    />
-                                </View>
+                            <View style={styles.dropDown}>
+                                <DropDownPicker
+                                    open={open}
+                                    value={value}
+                                    items={items}
+                                    setOpen={setOpen}
+                                    setValue={setValue}
+                                    setItems={setItems}
+                                />
                             </View>
+                        </View>
                         : <Text style={styles.deliveries}>REPARTIDOR ASIGNADO: {order.delivery?.name} {order.delivery?.lastname}</Text>
                 }
 
