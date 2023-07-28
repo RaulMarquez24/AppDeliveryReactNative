@@ -91,7 +91,19 @@ const DeliveryOrderMapStyles = StyleSheet.create({
         flex: 1,
         marginLeft: 15,
     },
-
+    markerImage: {
+        height: 50,
+        width: 50,
+    },
+    backContainer: {
+        position: 'absolute',
+        top: 50,
+        left: 20,
+    },
+    back:{
+        width: 30,
+        height: 30,
+    },
 });
 
 export default DeliveryOrderMapStyles;
