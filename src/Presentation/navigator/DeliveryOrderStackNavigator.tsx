@@ -5,10 +5,12 @@ import { TouchableOpacity, Image } from 'react-native';
 import { DeliveryOrderListScreen } from '../views/delivery/order/list/OrderList';
 import { DeliveryOrderDetailScreen } from '../views/delivery/order/detail/OrderDetail';
 import { OrderProvider } from '../context/OrderContext';
+import { DeliveryOrderMapScreen } from '../views/delivery/order/map/OrderMap';
 
 export type DeliveryOrderStackParamList = {
     DeliveryOrderListScreen: undefined,
     DeliveryOrderDetailScreen: { order: Order },
+    DeliveryOrderMapScreen: { order: Order},
 }
 
 const Stack = createNativeStackNavigator<DeliveryOrderStackParamList>();
@@ -30,6 +32,12 @@ export const DeliveryOrderStackNavigator = () => {
                         title: 'Detalles de la orden',
                     }}
                 />
+
+                <Stack.Screen
+                    name="DeliveryOrderMapScreen"
+                    component={DeliveryOrderMapScreen}
+                />
+
             </Stack.Navigator>
         </OrderStatus>
     )

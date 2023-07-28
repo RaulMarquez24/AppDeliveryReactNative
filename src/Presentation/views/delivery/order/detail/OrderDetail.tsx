@@ -7,7 +7,6 @@ import { DeliveryOrderStackParamList } from '../../../../navigator/DeliveryOrder
 import { OrderDetailItem } from './Item'
 import { DateFormatter } from '../../../../utils/DateFormatter';
 import { RoundedButton } from '../../../../components/RoundedButton'
-import DropDownPicker from 'react-native-dropdown-picker';
 
 interface Props extends StackScreenProps<DeliveryOrderStackParamList, 'DeliveryOrderDetailScreen'> { };
 
@@ -91,8 +90,11 @@ export const DeliveryOrderDetailScreen = ({ navigation, route }: Props) => {
                     <Text style={styles.total}>TOTAL: {total}€</Text>
                     <View style={styles.button}>
                         {
-                            order.status === 'DESPACHADO' &&
-                            <RoundedButton text='INICIAR ENTREGA' onPress={() => updateToOnTheWayOrder()} />
+                            order.status === 'DESPACHADO' 
+                            ? <RoundedButton text='INICIAR ENTREGA' onPress={() => updateToOnTheWayOrder()} />
+                            : order.status === 'EN CAMINO'
+                            ? <RoundedButton text='IR A LA RUTA' onPress={() => navigation.navigate('DeliveryOrderMapScreen', {order: order})} />
+                            : []
                         }
                     </View>
                 </View>
