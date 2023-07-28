@@ -17,7 +17,7 @@ interface Props extends StackScreenProps<DeliveryOrderStackParamList, 'DeliveryO
 export const DeliveryOrderMapScreen = ({ navigation, route }: Props) => {
 
     const { order } = route.params;
-    const { messagePermissions, postion, mapRef, name, origin, destination, latitude, longitude, onRegionChangeComplete, stopForegroundUpdate } = useViewModel(order);
+    const { messagePermissions, postion, mapRef, origin, destination, responseMessage, stopForegroundUpdate, updateToDeliveredOrder } = useViewModel(order);
 
     useEffect(() => {
         if (messagePermissions != '') {
@@ -32,6 +32,11 @@ export const DeliveryOrderMapScreen = ({ navigation, route }: Props) => {
         });
     }, [navigation])
 
+    useEffect(() => {
+        if (responseMessage !== '') {
+            Alert.alert('Entregar pedido', responseMessage, [{ text: 'OK', onPress: () => { navigation.pop(2) } }]);
+        }
+    }, [responseMessage, navigation]);
 
     return (
         <View style={styles.container}>
@@ -40,6 +45,7 @@ export const DeliveryOrderMapScreen = ({ navigation, route }: Props) => {
                 provider={PROVIDER_GOOGLE} // QUITAR SI EN APPLE SE QUIERE EL MAPA DE APPLE
                 ref={mapRef}
                 customMapStyle={stylesMap}
+                zoomControlEnabled={true}
             >
                 {
                     postion !== undefined &&
@@ -112,7 +118,7 @@ export const DeliveryOrderMapScreen = ({ navigation, route }: Props) => {
                 <View style={styles.buttonRefPoint}>
                     <RoundedButton
                         text='ENTREGAR PEDIDO'
-                        onPress={() => { }}
+                        onPress={() => updateToDeliveredOrder()}
                     />
                 </View>
             </View>
