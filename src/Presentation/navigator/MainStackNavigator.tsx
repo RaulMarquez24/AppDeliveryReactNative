@@ -14,6 +14,7 @@ import { AdminCategoryListScreen } from '../../../src/Presentation/views/admin/c
 import { AdminCategoryUpdateScreen } from '../../../src/Presentation/views/admin/category/update/CategoryUpdate';
 import { Category } from '../../../src/Domain/entities/Category';
 import { CategoryProvider } from '../../../src/Presentation/context/CategoryContext';
+import { DeliveryTabsNavigator } from './DeliveryTabsNavigator';
 
 export type RootStackParamList = {
     HomeScreen: undefined,
@@ -22,6 +23,7 @@ export type RootStackParamList = {
     RolesScreen: undefined,
     AdminTabsNavigator: undefined,
     ClientTabsNavigator: undefined,
+    DeliveryTabsNavigator: undefined,
     ProfileUpdateScreen: { user: User },
 }
 
@@ -61,6 +63,11 @@ export const MainStackNavigator = () => {
                 />
 
                 <Stack.Screen
+                    name="DeliveryTabsNavigator"
+                    component={DeliveryTabsNavigator}
+                />
+
+                <Stack.Screen
                     name="ClientTabsNavigator"
                     component={ClientTabsNavigator}
                 />
@@ -74,7 +81,7 @@ export const MainStackNavigator = () => {
                     }}
                 />
 
-                
+
 
             </Stack.Navigator>
         </UserState>

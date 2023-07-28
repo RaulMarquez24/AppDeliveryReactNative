@@ -1,24 +1,21 @@
 import React from 'react'
 import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
-// import { useNavigation } from '@react-navigation/native';
-// import { StackNavigationProp } from '@react-navigation/stack';
-// import { CategoryStackParamList } from '../../../../navigator/AdminCategoryNavigator';
 import { Order } from '../../../../../Domain/entities/Order';
 import { color } from 'react-native-reanimated';
 import { DateFormatter } from '../../../../utils/DateFormatter';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { AdminOrderStackParamList } from '../../../../navigator/AdminOrderStackNavigator';
+import { DeliveryOrderStackParamList } from '../../../../navigator/DeliveryOrderStackNavigator';
 import { useNavigation } from '@react-navigation/native';
 
 interface Props {
     order: Order,
-    navigation: StackNavigationProp<AdminOrderStackParamList, 'AdminOrderListScreen', undefined>
+    navigation: StackNavigationProp<DeliveryOrderStackParamList, 'DeliveryOrderListScreen', undefined>
 }
 
 export const OrderListItem = ({ order, navigation }: Props) => {
 
     return (
-        <TouchableOpacity onPress={() => navigation.navigate('AdminOrderDetailScreen', {order: order})}>
+        <TouchableOpacity onPress={() => navigation.navigate('DeliveryOrderDetailScreen', {order: order})}>
             <View style={styles.container}>
                 <Text style={styles.order}>Orden #{order.id}</Text>
                 <Text style={{ ...styles.info, marginTop: 10 }}>Fecha del pedido: {DateFormatter(order.timestamp!)}</Text>
