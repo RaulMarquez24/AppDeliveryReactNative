@@ -17,7 +17,7 @@ interface Props extends StackScreenProps<ClientOrderStackParamList, 'ClientOrder
 export const ClientOrderMapScreen = ({ navigation, route }: Props) => {
 
     const { order } = route.params;
-    const { messagePermissions, postion, mapRef, origin, destination, responseMessage, stopForegroundUpdate, updateToDeliveredOrder } = useViewModel(order);
+    const { messagePermissions, postion, mapRef, origin, destination, responseMessage, socket } = useViewModel(order);
 
     useEffect(() => {
         if (messagePermissions != '') {
@@ -28,7 +28,7 @@ export const ClientOrderMapScreen = ({ navigation, route }: Props) => {
     useEffect(() => {
         const unsubscribe = navigation.addListener('beforeRemove', () => {
             console.log('EJECUTE: BeforeRemove');
-            stopForegroundUpdate();
+            socket.disconnect();
         });
     }, [navigation])
 
@@ -48,7 +48,7 @@ export const ClientOrderMapScreen = ({ navigation, route }: Props) => {
                 zoomControlEnabled={true}
             >
                 {
-                    postion !== undefined &&
+                    postion.latitude !== 0.0 &&
                     <Marker coordinate={postion}>
                         <Image
                             style={styles.markerImage}
@@ -106,21 +106,15 @@ export const ClientOrderMapScreen = ({ navigation, route }: Props) => {
                 <View style={styles.infoClient}>
                     <Image
                         style={styles.imageClient}
-                        source={{ uri: order.client?.image }}
+                        source={{ uri: order.delivery?.image }}
                     />
-                    <Text style={styles.nameClient}>{order.client?.name} {order.client?.lastname}</Text>
+                    <Text style={styles.nameClient}>{order.delivery?.name} {order.delivery?.lastname}</Text>
                     <Image
                         style={styles.imagePhone}
                         source={require('../../../../../../assets/phone.png')}
                     />
                 </View>
 
-                <View style={styles.buttonRefPoint}>
-                    <RoundedButton
-                        text='ENTREGAR PEDIDO'
-                        onPress={() => updateToDeliveredOrder()}
-                    />
-                </View>
             </View>
 
             <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>

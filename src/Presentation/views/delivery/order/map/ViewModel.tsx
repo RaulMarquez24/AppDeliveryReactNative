@@ -35,7 +35,7 @@ const DeliveryOrderMapViewModel = (order: Order) => {
         // LLAMADO DE SOCKET
         socket.connect();
         socket.on('connect', () => {
-            console.log('------------ SOCKET IO CONNECTION ------------'); 
+            console.log('------------ SOCKET IO CONNECTION ------------');
         });
 
         const requestPermissions = async () => {
@@ -50,7 +50,7 @@ const DeliveryOrderMapViewModel = (order: Order) => {
 
     }, [])
 
-    const updateToDeliveredOrder= async () => {
+    const updateToDeliveredOrder = async () => {
         const result = await updateToDelivered(order);
         setResponseMessage(result.message);
     }
@@ -107,15 +107,27 @@ const DeliveryOrderMapViewModel = (order: Order) => {
         mapRef.current?.animateCamera(newCamera, { duration: 2000 });
 
         positionSuscription?.remove();
-
         positionSuscription = await Location.watchPositionAsync(
             {
-                accuracy: Location.Accuracy.BestForNavigation
+                accuracy: Location.Accuracy.Balanced
             },
             location => {
                 // console.log('POSITION: ' + JSON.stringify(location?.coords, null, 3));
-                
+                socket.emit('position', {
+                    id_order: order.id!,
+                    lat: location?.coords.latitude,
+                    lng: location?.coords.longitude,
+                })
                 setPostion(location?.coords);
+                const newCamera: Camera = {
+                    center: { latitude: location?.coords.latitude!, longitude: location?.coords.longitude! },
+                    zoom: 18,
+                    heading: 0,
+                    pitch: 0,
+                    altitude: 0
+                };
+                mapRef.current?.animateCamera(newCamera, { duration: 2000 });
+
             }
         )
     }
