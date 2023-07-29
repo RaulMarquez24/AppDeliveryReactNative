@@ -60,3 +60,4 @@ ApiDeliveryWithImage.interceptors.request.use(
 // }
 
 export { ApiDelivery, ApiDeliveryWithImage }
+export const apiUrl = url;

@@ -6,6 +6,7 @@ import * as Location from 'expo-location';
 import MapView, { Camera } from 'react-native-maps';
 import { Order } from '../../../../../Domain/entities/Order';
 import { OrderContext } from '../../../../context/OrderContext';
+import socket from '../../../../utils/SocketIO';
 
 const DeliveryOrderMapViewModel = (order: Order) => {
 
@@ -27,10 +28,15 @@ const DeliveryOrderMapViewModel = (order: Order) => {
     });
     const mapRef = useRef<MapView | null>(null);
     let positionSuscription: Location.LocationSubscription;
-    
     const { updateToDelivered } = useContext(OrderContext);
 
     useEffect(() => {
+
+        // LLAMADO DE SOCKET
+        socket.connect();
+        socket.on('connect', () => {
+            console.log('------------ SOCKET IO CONNECTION ------------'); 
+        });
 
         const requestPermissions = async () => {
             const foreground = await Location.requestForegroundPermissionsAsync();
@@ -127,6 +133,7 @@ const DeliveryOrderMapViewModel = (order: Order) => {
         origin,
         destination,
         responseMessage,
+        socket,
         onRegionChangeComplete,
         stopForegroundUpdate,
         updateToDeliveredOrder,

@@ -17,7 +17,7 @@ interface Props extends StackScreenProps<DeliveryOrderStackParamList, 'DeliveryO
 export const DeliveryOrderMapScreen = ({ navigation, route }: Props) => {
 
     const { order } = route.params;
-    const { messagePermissions, postion, mapRef, origin, destination, responseMessage, stopForegroundUpdate, updateToDeliveredOrder } = useViewModel(order);
+    const { messagePermissions, postion, mapRef, origin, destination, responseMessage, socket, stopForegroundUpdate, updateToDeliveredOrder } = useViewModel(order);
 
     useEffect(() => {
         if (messagePermissions != '') {
@@ -29,6 +29,7 @@ export const DeliveryOrderMapScreen = ({ navigation, route }: Props) => {
         const unsubscribe = navigation.addListener('beforeRemove', () => {
             console.log('EJECUTE: BeforeRemove');
             stopForegroundUpdate();
+            socket.disconnect();
         });
     }, [navigation])
 
