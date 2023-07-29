@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { MyColors } from '../../../../theme/AppTheme';
 
-const DeliveryOrderDetailStyles = StyleSheet.create({
+const ClientOrderDetailStyles = StyleSheet.create({
 
     container:{
         flex: 1,
@@ -62,4 +62,4 @@ const DeliveryOrderDetailStyles = StyleSheet.create({
     },
 });
 
-export default DeliveryOrderDetailStyles;
+export default ClientOrderDetailStyles;

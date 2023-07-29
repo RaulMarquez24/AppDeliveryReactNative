@@ -48,6 +48,20 @@ export class OrderRepositoryImpl implements OrderRepository {
         }
     }
 
+    async getByClientAndStatus(idClient: string, status: string): Promise<Order[]> {
+        try {
+            
+            const response = await ApiDelivery.get<Order[]>(`/orders/findByClientAndStatus/${idClient}/${status}`)
+            return Promise.resolve(response.data)
+
+        } catch (error) {
+            let e = (error as AxiosError);
+            console.log('Error: ' + JSON.stringify(e.response?.data));
+            const apiError: ResponseAPIDelivery = JSON.parse(JSON.stringify(e.response?.data));
+            return Promise.resolve([]);
+        }
+    }
+
     async updateToDispatched(order: Order): Promise<ResponseAPIDelivery> {
         try {
             

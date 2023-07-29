@@ -6,6 +6,7 @@ import { UpdateToDispatchedOrderUseCase } from "../../Domain/useCases/order/Upda
 import { GetByDeliveryAndStatusOrderUseCase } from "../../Domain/useCases/order/GetByDeliveryAndStatusOrder";
 import { UpdateToOnTheWayOrderUseCase } from "../../Domain/useCases/order/UpdateToOnTheWayOrder";
 import { UpdateToDeliveredOrderUseCase } from "../../Domain/useCases/order/UpdateToDeliveredOrder";
+import { GetByClientAndStatusOrderUseCase } from "../../Domain/useCases/order/GetByClientAndStatusOrder";
 
 export interface OrderContextProps {
     ordersPayed: Order[],
@@ -14,6 +15,7 @@ export interface OrderContextProps {
     ordersDelivery: Order[],
     getOrdersByStatus(status: string): Promise<void>,
     getOrdersByDeliveryAndStatus(idDelivery: string, status: string): Promise<void>,
+    getOrdersByClientAndStatus(idClient: string, status: string): Promise<void>,
     updateToDispatched(order: Order): Promise<ResponseAPIDelivery>,
     updateToOnTheWay(order: Order): Promise<ResponseAPIDelivery>,
     updateToDelivered(order: Order): Promise<ResponseAPIDelivery>,
@@ -61,6 +63,19 @@ export const OrderProvider = ({ children }: any) => {
         }
     }
 
+    const getOrdersByClientAndStatus = async (idClient: string, status: string) => {
+        const result = await GetByClientAndStatusOrderUseCase(idClient, status);
+        if (status === 'PAGADO') {
+            setOrdersPayed(result);
+        } else if (status === 'DESPACHADO') {
+            setOrdersDispatched(result);
+        } else if (status === 'EN CAMINO') {
+            setOrdersOnTheWay(result);
+        } else if (status === 'ENTREGADO') {
+            setOrdersDelivery(result);
+        }
+    }
+
     const updateToDispatched = async (order: Order) => {
         const result = await UpdateToDispatchedOrderUseCase(order);
         getOrdersByStatus('PAGADO');
@@ -91,6 +106,7 @@ export const OrderProvider = ({ children }: any) => {
                 ordersDelivery,
                 getOrdersByStatus,
                 getOrdersByDeliveryAndStatus,
+                getOrdersByClientAndStatus,
                 updateToDispatched,
                 updateToOnTheWay,
                 updateToDelivered,
