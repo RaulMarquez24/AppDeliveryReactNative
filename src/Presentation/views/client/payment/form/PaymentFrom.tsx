@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { KeyboardAvoidingView, Platform, Text, View } from 'react-native'
+import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native'
 import styles from './Styles'
 import useViewModel from './ViewModel'
 import CreditCard from 'react-native-credit-card-form-ui'
@@ -7,8 +7,12 @@ import { RoundedButton } from '../../../../components/RoundedButton'
 import { MyColors } from '../../../../theme/AppTheme'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { CustomTextInput } from '../../../../components/CustomTextInput'
+import { StackScreenProps } from '@react-navigation/stack'
+import { ClientStackParamList } from '../../../../navigator/ClientStackNavigator'
 
-export const ClientPaymentFormScreen = () => {
+interface Props extends StackScreenProps<ClientStackParamList, 'ClientPaymentFormScreen'> { };
+
+export const ClientPaymentFormScreen = ({ navigation, route }: Props) => {
 
     const {
         creditCardRef,
@@ -17,6 +21,7 @@ export const ClientPaymentFormScreen = () => {
         open,
         value,
         items,
+        cardToken,
         handleSubmit,
         getIdentificationTypes,
         setOpen,
@@ -30,6 +35,11 @@ export const ClientPaymentFormScreen = () => {
         getIdentificationTypes();
     }, [])
 
+    useEffect(() => {
+        if (cardToken !== undefined && cardToken !== null) {
+            navigation.navigate('ClientPaymentInstallmentsScreen', { cardToken: cardToken })
+        }
+    }, [cardToken])
 
     return (
         <View style={styles.container}>
@@ -54,26 +64,26 @@ export const ClientPaymentFormScreen = () => {
                     }}
                 />
             </View>
+            
+                <View style={styles.dropDown}>
+                    <DropDownPicker
+                        open={open}
+                        value={value}
+                        items={items}
+                        setOpen={setOpen}
+                        setValue={setValue}
+                        setItems={setItems}
+                    />
 
-            <View style={styles.dropDown}>
-                <DropDownPicker
-                    open={open}
-                    value={value}
-                    items={items}
-                    setOpen={setOpen}
-                    setValue={setValue}
-                    setItems={setItems}
-                />
-
-                <CustomTextInput
-                    image={require('../../../../../../assets/document.png')}
-                    placeholder='Numero de identificación'
-                    value={identificationNumber}
-                    keyboardType='default'
-                    property='identificationNumber'
-                    onChangeText={onChange}
-                />
-            </View>
+                    <CustomTextInput
+                        image={require('../../../../../../assets/document.png')}
+                        placeholder='Numero de identificación'
+                        value={identificationNumber}
+                        keyboardType='default'
+                        property='identificationNumber'
+                        onChangeText={onChange}
+                    />
+                </View>
 
             <View style={styles.button}>
                 <RoundedButton text='CONTINUAR' onPress={() => handleSubmit()} />

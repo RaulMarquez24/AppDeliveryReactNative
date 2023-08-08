@@ -10,6 +10,8 @@ import { ClientAddressListScreen } from "../views/client/address/list/AddressLis
 import { ClientAddressCreateScreen } from "../views/client/address/create/AddressCreate";
 import { ClientAddressMapScreen } from "../views/client/address/map/AddressMap";
 import { ClientPaymentFormScreen } from "../views/client/payment/form/PaymentFrom";
+import { ClientPaymentInstallmentsScreen } from "../views/client/payment/installments/PaymentInstallments";
+import { ResponseMercadoPagoCardTocken } from "../../Data/sources/remote/models/ResponseMercadoPagoCardTocken";
 
 export type ClientStackParamList = {
     ClientCategoryListScreen: undefined,
@@ -20,6 +22,7 @@ export type ClientStackParamList = {
     ClientAddressCreateScreen: { refPoint: string, latitude: number, longitude: number } | undefined,
     ClientAddressMapScreen: undefined,
     ClientPaymentFormScreen: undefined,
+    ClientPaymentInstallmentsScreen: { cardToken: ResponseMercadoPagoCardTocken}
 }
 
 const Stack = createNativeStackNavigator<ClientStackParamList>();
@@ -122,6 +125,15 @@ export const ClientStackNavigator = () => {
                     component={ClientPaymentFormScreen}
                     options={{
                         title: 'Formulario de pago',
+                        headerShown: true,
+                    }}
+                />
+
+                <Stack.Screen
+                    name='ClientPaymentInstallmentsScreen'
+                    component={ClientPaymentInstallmentsScreen}
+                    options={{
+                        title: 'Número de cuotas',
                         headerShown: true,
                     }}
                 />

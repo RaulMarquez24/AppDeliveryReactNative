@@ -4,6 +4,7 @@ import { GetIdentificationTypesMercadoPagoUseCase } from '../../../../../Domain/
 import { IdentificationType } from '../../../../../Domain/entities/IdentificationType';
 import { CreateCardTokenMercadoPagoUseCase } from '../../../../../Domain/useCases/mercado_pago/CreateCardTokenMercadoPago';
 import { CardTokenParams, Cardholder, Identification } from '../../../../../Data/sources/remote/models/CardTokenParams';
+import { ResponseMercadoPagoCardTocken } from '../../../../../Data/sources/remote/models/ResponseMercadoPagoCardTocken';
 
 interface DropDownProps {
   label: string,
@@ -31,6 +32,7 @@ const ClientPaymentFormViewModel = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState<DropDownProps[]>([]);
+  const [cardToken, setCardToken] = useState<ResponseMercadoPagoCardTocken>();
 
   useEffect(() => {
     onChange('identificationType', value);
@@ -40,7 +42,9 @@ const ClientPaymentFormViewModel = () => {
   useEffect(() => {
     // console.log('VALUES FORM: ', JSON.stringify(values, null, 3));
     // console.log('iIDENTIFICATION VALUES FORM: ', JSON.stringify(identificationValues, null, 3));
-    createCardToken();
+    if (values.brand !== '' && values.cvv !== '' && values.expiration !== '' && values.holder !== '' && values.number !== '') {
+      createCardToken();
+    }
   }, [values])
 
   useEffect(() => {
@@ -63,6 +67,11 @@ const ClientPaymentFormViewModel = () => {
       }
     }
     const result = await CreateCardTokenMercadoPagoUseCase(data);
+    if (result) {
+      if (result.id !== '') {
+        setCardToken(result);
+      }
+    }
     console.log('MERCADO PAGO CARD TOKEN', JSON.stringify(result, null, 3));
 
   }
@@ -105,6 +114,7 @@ const ClientPaymentFormViewModel = () => {
     open,
     value,
     items,
+    cardToken,
     handleSubmit,
     getIdentificationTypes,
     setOpen,
