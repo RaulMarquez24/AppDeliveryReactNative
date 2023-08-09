@@ -1,23 +1,29 @@
 import { StackScreenProps } from '@react-navigation/stack'
 import React, { useEffect } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Alert, ActivityIndicator } from 'react-native'
 import { ClientStackParamList } from '../../../../navigator/ClientStackNavigator'
 import DropDownPicker from 'react-native-dropdown-picker'
 import useViewModel from './ViewModel'
 import styles from './Styles'
 import { RoundedButton } from '../../../../components/RoundedButton'
+import { MyColors } from '../../../../theme/AppTheme'
 
 interface Props extends StackScreenProps<ClientStackParamList, 'ClientPaymentInstallmentsScreen'> { };
 
 export const ClientPaymentInstallmentsScreen = ({ navigation, route }: Props) => {
 
     const { cardToken } = route.params;
-    const { open, value, items, installments, setOpen, setValue, setItems, getInstallments } = useViewModel(cardToken);
+    const { open, value, items, installments, responseMessage, loading, setOpen, setValue, setItems, getInstallments, createPayment } = useViewModel(cardToken);
 
     useEffect(() => {
         getInstallments();
     }, [])
 
+    useEffect(() => {
+        if (responseMessage !== '') {
+            Alert.alert('Gestionar pago', responseMessage);
+        }
+    }, [responseMessage])
 
     return (
         <View style={styles.container}>
@@ -36,9 +42,18 @@ export const ClientPaymentInstallmentsScreen = ({ navigation, route }: Props) =>
             <View style={styles.buttonContainer}>
                 <RoundedButton
                     text='PROCESAR PAGO'
-                    onPress={() => { }}
+                    onPress={() => createPayment()}
                 />
             </View>
+
+            {
+                loading &&
+                <ActivityIndicator
+                style={styles.loading}
+                size="large" 
+                color={MyColors.primary} />
+            }
+            
         </View>
     )
 }
