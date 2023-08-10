@@ -13,11 +13,17 @@ interface Props extends StackScreenProps<ClientStackParamList, 'ClientPaymentIns
 export const ClientPaymentInstallmentsScreen = ({ navigation, route }: Props) => {
 
     const { cardToken } = route.params;
-    const { open, value, items, installments, responseMessage, loading, setOpen, setValue, setItems, getInstallments, createPayment } = useViewModel(cardToken);
+    const { open, value, items, installments, responseMessage, loading, paymentData, setOpen, setValue, setItems, getInstallments, createPayment } = useViewModel(cardToken);
 
     useEffect(() => {
         getInstallments();
     }, [])
+
+    useEffect(() => {
+        if (paymentData !== undefined && paymentData !== null) {
+            navigation.replace('ClientPaymentStatusScreen', { paymentData: paymentData })
+        }
+    }, [paymentData])
 
     useEffect(() => {
         if (responseMessage !== '') {

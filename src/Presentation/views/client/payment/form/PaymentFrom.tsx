@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native'
+import { Image, KeyboardAvoidingView, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import styles from './Styles'
 import useViewModel from './ViewModel'
 import CreditCard from 'react-native-credit-card-form-ui'
@@ -86,7 +86,13 @@ export const ClientPaymentFormScreen = ({ navigation, route }: Props) => {
                 </View>
 
             <View style={styles.button}>
-                <RoundedButton text='CONTINUAR' onPress={() => handleSubmit()} />
+                <TouchableOpacity onPress={() => handleSubmit()} style={styles.check}>
+                    <Image
+                        style={styles.check}
+                        source={require('../../../../../../assets/checked.png')}
+                    />
+                </TouchableOpacity>
+                {/* <RoundedButton text='CONTINUAR' onPress={() => handleSubmit()} /> */}
             </View>
         </View>
     )

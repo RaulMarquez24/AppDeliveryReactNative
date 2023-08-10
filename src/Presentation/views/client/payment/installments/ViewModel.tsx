@@ -6,6 +6,7 @@ import { PayerCost, ResponseMercadoPagoInstallments } from '../../../../../Data/
 import { PaymentParams } from '../../../../../Data/sources/remote/models/PaymentParams';
 import { CreatePaymentMercadoPagoUseCase } from '../../../../../Domain/useCases/mercado_pago/CreatePaymentMercadoPago';
 import { UserContext } from '../../../../context/UserContext';
+import { ResponseMercadoPagoPayment } from '../../../../../Data/sources/remote/models/ResponseMercadoPagoPayment';
 
 interface DropDownProps {
     label: string,
@@ -23,7 +24,7 @@ const PaymentInstallmentsViewModel = (cardToken: ResponseMercadoPagoCardTocken) 
     const [installmentData, setInstallmentData] = useState<ResponseMercadoPagoInstallments>()
     const [responseMessage, setResponseMessage] = useState('');
     const [loading, setLoading] = useState(false);
-
+    const [paymentData, setPaymentData] = useState<ResponseMercadoPagoPayment>();
 
     useEffect(() => {
         if (installments.length > 0) {
@@ -53,6 +54,7 @@ const PaymentInstallmentsViewModel = (cardToken: ResponseMercadoPagoCardTocken) 
         }
         setLoading(true);
         const result = await CreatePaymentMercadoPagoUseCase(data);
+        setPaymentData(result.data);
         setLoading(false);
         setResponseMessage(result.message);
     }
@@ -81,6 +83,7 @@ const PaymentInstallmentsViewModel = (cardToken: ResponseMercadoPagoCardTocken) 
         installments,
         responseMessage,
         loading,
+        paymentData,
         setOpen,
         setValue,
         setItems,

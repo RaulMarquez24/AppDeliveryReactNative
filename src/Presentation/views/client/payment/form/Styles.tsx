@@ -19,6 +19,11 @@ const ClientPaymentFormStyles = StyleSheet.create({
         marginTop: 30,
         marginHorizontal: 20,
     },
+    check: {
+        width: 60,
+        height: 60,
+        alignSelf: "flex-end",
+    },
 });
 
 export default ClientPaymentFormStyles;
