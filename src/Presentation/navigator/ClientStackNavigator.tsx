@@ -14,6 +14,7 @@ import { ClientPaymentInstallmentsScreen } from "../views/client/payment/install
 import { ResponseMercadoPagoCardTocken } from "../../Data/sources/remote/models/ResponseMercadoPagoCardTocken";
 import { ClientPaymentStatusScreen } from "../views/client/payment/status/PaymentStatus";
 import { ResponseMercadoPagoPayment } from "../../Data/sources/remote/models/ResponseMercadoPagoPayment";
+import { ResponseStripePayment } from "../../Data/sources/remote/models/ResponseStripePayment";
 
 export type ClientStackParamList = {
     ClientCategoryListScreen: undefined,
@@ -25,7 +26,7 @@ export type ClientStackParamList = {
     ClientAddressMapScreen: undefined,
     ClientPaymentFormScreen: undefined,
     ClientPaymentInstallmentsScreen: { cardToken: ResponseMercadoPagoCardTocken}
-    ClientPaymentStatusScreen: { paymentData: ResponseMercadoPagoPayment }
+    ClientPaymentStatusScreen: { paymentData?: ResponseMercadoPagoPayment, stripePaymentData?: ResponseStripePayment, paySucces?: Boolean }
 }
 
 const Stack = createNativeStackNavigator<ClientStackParamList>();

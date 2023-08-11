@@ -31,6 +31,9 @@ const ClientPaymentStatusStyles = StyleSheet.create({
         justifyContent: "flex-end",
         marginBottom: 20,
     },
+    paymethod:{
+        alignItems: "center"
+    },
 
 });
 

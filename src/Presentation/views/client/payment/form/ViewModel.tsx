@@ -1,10 +1,16 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react'
+import React, { useRef, useState, useEffect, useCallback, useContext } from 'react'
 import { log } from 'react-native-reanimated';
 import { GetIdentificationTypesMercadoPagoUseCase } from '../../../../../Domain/useCases/mercado_pago/GetIdentificationTypesMercadoPago';
 import { IdentificationType } from '../../../../../Domain/entities/IdentificationType';
 import { CreateCardTokenMercadoPagoUseCase } from '../../../../../Domain/useCases/mercado_pago/CreateCardTokenMercadoPago';
 import { CardTokenParams, Cardholder, Identification } from '../../../../../Data/sources/remote/models/CardTokenParams';
 import { ResponseMercadoPagoCardTocken } from '../../../../../Data/sources/remote/models/ResponseMercadoPagoCardTocken';
+// @ts-ignore
+import stripe from 'react-native-stripe-client'
+import { CreatePaymentStripeUseCase } from '../../../../../Domain/useCases/stripe/CreatePaymentStripe';
+import { ShoppingBagContext } from '../../../../context/ShoppingBagContext';
+import { UserContext } from '../../../../context/UserContext';
+import { ResponseStripePayment } from '../../../../../Data/sources/remote/models/ResponseStripePayment';
 
 interface DropDownProps {
   label: string,
@@ -22,6 +28,10 @@ const ClientPaymentFormViewModel = () => {
     number: '',
   });
 
+  const stripeClient = stripe("pk_test_51NZZSkLbwhf8X80Xv86TY9frkJfl9EDZxSGoVFUy5S4RO1hxuTyVEnYM54Z6kONmYBlVVdoyGj7cpdz6Pndpgfvz00faOS1wEi");
+  const { total, shoppingBag } = useContext(ShoppingBagContext);
+  const { user } = useContext(UserContext);
+
   const [identificationValues, setIdentificationValues] = useState({
     identificationNumber: '',
     identificationType: '',
@@ -33,6 +43,10 @@ const ClientPaymentFormViewModel = () => {
   const [value, setValue] = useState(null);
   const [items, setItems] = useState<DropDownProps[]>([]);
   const [cardToken, setCardToken] = useState<ResponseMercadoPagoCardTocken>();
+  const [payMethod, setPayMethod] = useState('mercadopago');
+  const [loading, setLoading] = useState(false);
+  const [stripePaymentData, setStripePaymentData] = useState<ResponseStripePayment>();
+  const [paySucces, setPaySucces] = useState(true);
 
   useEffect(() => {
     onChange('identificationType', value);
@@ -43,13 +57,50 @@ const ClientPaymentFormViewModel = () => {
     // console.log('VALUES FORM: ', JSON.stringify(values, null, 3));
     // console.log('iIDENTIFICATION VALUES FORM: ', JSON.stringify(identificationValues, null, 3));
     if (values.brand !== '' && values.cvv !== '' && values.expiration !== '' && values.holder !== '' && values.number !== '') {
-      createCardToken();
+      if (payMethod === 'mercadopago') {
+        createCardToken();
+      }else if (payMethod === 'stripe') {
+        createTokenStripe();
+      }
     }
   }, [values])
 
   useEffect(() => {
     setDropDownItems();
   }, [identificationTypeList])
+
+  const createTokenStripe = async () => {
+    const response = await stripeClient.createPaymentMethod("card", {
+      number: values.number.replace(/\s/g,''),
+      exp_month: parseInt(values.expiration.split('/')[0]),
+      exp_year: parseInt(values.expiration.split('/')[1]),
+      cvc: values.cvv
+    });
+
+    console.log('RESPONSE STRIPE: ' + JSON.stringify(response, null, 3));
+
+    if (response.id !== undefined && response.id !== null) {
+      setLoading(true);
+      const result = await CreatePaymentStripeUseCase(response.id, (total * 100), { //pasar los € a centimos!!
+        id_client: user.id!,
+        id_address: user.address?.id!,
+        products: shoppingBag
+      });
+      setStripePaymentData(response);
+      setPaySucces(result.success);
+
+      console.log('RESPONSE: ' + JSON.stringify(result, null, 3));
+      setLoading(false);
+    }
+  }
+
+  const changeMethod = (method: string) => {
+    if (method === 'mercadopago') {
+      setPayMethod('mercadopago')
+    }else if (method === 'stripe') {
+      setPayMethod('stripe');
+    }
+  }
 
   const createCardToken = async () => {
 
@@ -115,6 +166,10 @@ const ClientPaymentFormViewModel = () => {
     value,
     items,
     cardToken,
+    payMethod,
+    loading,
+    stripePaymentData,
+    paySucces,
     handleSubmit,
     getIdentificationTypes,
     setOpen,
@@ -122,6 +177,7 @@ const ClientPaymentFormViewModel = () => {
     setItems,
     onChange,
     createCardToken,
+    changeMethod,
   }
 }
 
