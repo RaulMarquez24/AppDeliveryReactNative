@@ -4,6 +4,7 @@ import { GetDeliveryMenUserUseCase } from '../../../../../Domain/useCases/user/G
 import { User } from '../../../../../Domain/entities/User';
 import { UpdateToDispatchedOrderUseCase } from '../../../../../Domain/useCases/order/UpdateToDispatchedOrder';
 import { OrderContext } from '../../../../context/OrderContext';
+import { NotificationPush } from '../../../../utils/NotificationPush';
 
 interface DropDownProps {
     label: string,
@@ -16,6 +17,7 @@ const AdminOrderDetailViewModel = (order: Order) => {
     const [deliveryMen, setDeliveryMen] = useState<User[]>([]);
     const [responseMessage, setResponseMessage] = useState('')
     const {updateToDispatched} = useContext(OrderContext);
+    const { sendPushNotification } = NotificationPush();
 
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
@@ -30,6 +32,10 @@ const AdminOrderDetailViewModel = (order: Order) => {
             order.id_delivery = value!;
             const result = await updateToDispatched(order);
             setResponseMessage(result.message);
+            if (result.success) {
+                const index = deliveryMen.findIndex((delivery) => delivery.id === value!);
+                await sendPushNotification(deliveryMen[index].notification_token!, 'PEDIDO ASIGNADO', 'Te han asignado un pedido');
+            }
         } else {
             setResponseMessage('Selecciona el repartidor');
         }

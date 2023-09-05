@@ -7,12 +7,24 @@ import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigator/MainStackNavigator'
 import useViewModel from './ViewModel';
 import styles from './Styles';
+import * as Notifications from 'expo-notifications';
+import { NotificationPush } from '../../utils/NotificationPush';
 
-interface Props extends StackScreenProps<RootStackParamList, 'HomeScreen'>{};
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+    }),
+});
 
-export const HomeScreen = ({navigation, route}: Props) => {
+interface Props extends StackScreenProps<RootStackParamList, 'HomeScreen'> { };
 
-    const { email, password, errorMessage, user, onChange, login } = useViewModel();
+export const HomeScreen = ({ navigation, route }: Props) => {
+
+    const { email, password, errorMessage, user, onChange, login, updateNotificationToken, } = useViewModel();
+
+    const { notification, notificationListener, responseListener, setNotification, registerForPushNotificationsAsync } = NotificationPush();
 
     useEffect(() => {
         if (errorMessage != '') {
@@ -22,11 +34,34 @@ export const HomeScreen = ({navigation, route}: Props) => {
 
     useEffect(() => {
         if (user?.id !== null && user?.id !== undefined && user?.id !== '') {
-            if (user.roles?.length! > 1) {
-                navigation.replace('RolesScreen');
-            }else {
-                navigation.replace('ClientTabsNavigator');
-            }
+
+            registerForPushNotificationsAsync().then(token => {
+                
+                console.log('TOKEN: ' + token);
+
+                updateNotificationToken(user?.id!, token! as any);
+                // updateNotificationToken(user?.id!, 'hola');
+
+
+                if (user.roles?.length! > 1) {
+                    navigation.replace('RolesScreen');
+                } else {
+                    navigation.replace('ClientTabsNavigator');
+                }
+            });
+    
+            notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+                setNotification(notification);
+            });
+    
+            responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+                console.log(response);
+            });
+    
+            return () => {
+                Notifications.removeNotificationSubscription(notificationListener.current);
+                Notifications.removeNotificationSubscription(responseListener.current);
+            };
         }
     }, [user])
 
@@ -64,7 +99,7 @@ export const HomeScreen = ({navigation, route}: Props) => {
                 />
 
                 <View style={{ marginTop: '8%', }}>
-                    <RoundedButton text='ENTRAR' onPress={ () => login()} />
+                    <RoundedButton text='ENTRAR' onPress={() => login()} />
                 </View>
 
                 <View style={styles.formRegister}>

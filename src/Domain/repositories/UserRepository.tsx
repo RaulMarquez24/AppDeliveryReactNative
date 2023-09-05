@@ -7,5 +7,5 @@ export interface userRepository {
     getDeliveryMen(): Promise<User[]>;
     update(user: User): Promise<ResponseAPIDelivery>;
     updateWithImage(user: User, file: ImagePicker.ImagePickerAsset): Promise<ResponseAPIDelivery>;
-
+    updateNotificationToken(id: string, token: string): Promise<ResponseAPIDelivery>;
 }

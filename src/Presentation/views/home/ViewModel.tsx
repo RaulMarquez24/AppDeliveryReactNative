@@ -4,6 +4,7 @@ import { SaveUserLocalUseCase } from '../../../Domain/useCases/userLocal/SaveUse
 import { GetUserLocalUseCase } from '../../../Domain/useCases/userLocal/GetUserLocal';
 import { useUserLocal } from '../../hooks/useUserLocal';
 import { UserContext } from '../../context/UserContext';
+import { UpdateNotificationTokenUserUseCase } from '../../../Domain/useCases/user/UpdateNotificationTokenUser';
 
 const HomeViewModel = () => {
 
@@ -14,9 +15,9 @@ const HomeViewModel = () => {
     });
 
     // const { user, getUserSession } = useUserLocal();
-    const { user, saveUserSession } = useContext( UserContext );
+    const { user, saveUserSession } = useContext(UserContext);
     // console.log('USUARIO DE SESION: '+ JSON.stringify(user));
-    
+
     const onChange = (property: string, value: any) => {
         setValues({ ...values, [property]: value });
     }
@@ -28,12 +29,16 @@ const HomeViewModel = () => {
 
             if (!response.success) {
                 setErrorMessage(response.message)
-            }else{
+            } else {
                 // await SaveUserLocalUseCase(response.data);
                 // getUserSession();
                 saveUserSession(response.data);
             }
         }
+    }
+
+    const updateNotificationToken = async (id: string, token: string) => {
+        const result = await UpdateNotificationTokenUserUseCase(id, token);
     }
 
     const isValidForm = (): boolean => {
@@ -56,6 +61,7 @@ const HomeViewModel = () => {
         user,
         onChange,
         login,
+        updateNotificationToken,
         errorMessage
     }
 }
