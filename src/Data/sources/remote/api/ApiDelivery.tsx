@@ -2,7 +2,8 @@ import axios, { AxiosHeaders } from "axios";
 import { LocalStorage } from "../../local/LocalStorage";
 import { User } from "../../../../Domain/entities/User";
 
-const url = 'http://192.168.101.1:3000';//'http://192.168.189.1:3000'  
+// const url = 'http://192.168.189.1:3000';  // ETHERNET
+const url = 'http://192.168.1.19:3000';  // WIFI 
 
 const ApiDelivery = axios.create({
     baseURL: `${url}/api`, //change to your own server address here!
