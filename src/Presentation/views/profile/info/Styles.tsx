@@ -77,6 +77,7 @@ const ProfileInfoStyles = StyleSheet.create({
 
     logout:{
         position: 'absolute',
+        alignSelf: 'center',
         top: 30,
         right: 15,
     },
@@ -84,6 +85,13 @@ const ProfileInfoStyles = StyleSheet.create({
     logoutImg:{
         width: 40,
         height: 40,
+    },
+
+    change:{
+        position: 'absolute',
+        alignSelf: 'center',
+        top: 80,
+        right: 15,
     },
 })
 
