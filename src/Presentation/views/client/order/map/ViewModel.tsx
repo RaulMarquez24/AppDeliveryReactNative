@@ -17,20 +17,29 @@ const ClientOrderMapViewModel = (order: Order) => {
         latitude: 0.0,
         longitude: 0.0,
     });
-    const [postion, setPostion] = useState({
+    const [position, setPosition] = useState({
             latitude: 0.0,
             longitude: 0.0,
         });
     const [origin, setOrigin] = useState({
-        latitude: 0.0, //default origin point to
-        longitude: 0.0,
-    });
-    const [destination, setDestination] = useState({
         latitude: order.address?.lat!,
         longitude: order.address?.lng!,
     });
+    const [positionOnce, setPositionOnce] = useState({
+        latitude: 0.0,
+        longitude: 0.0,
+    });
     const mapRef = useRef<MapView | null>(null);
     let positionSuscription: Location.LocationSubscription;
+
+    useEffect(() => {
+        if (position.latitude !== 0.0 && position.longitude !== 0.0) {
+            if (positionOnce.latitude === 0.0 && positionOnce.longitude === 0.0) {
+                setPositionOnce(position);
+            }
+        }
+    }, [position])
+    
 
     useEffect(() => {
         socket.connect();
@@ -38,7 +47,7 @@ const ClientOrderMapViewModel = (order: Order) => {
             console.log('------------ SOCKET IO CONNECTION ------------');
         });
         socket.on(`position/${order.id!}`, (data) =>{
-            setPostion({latitude: data.lat, longitude: data.lng});
+            setPosition({latitude: data.lat, longitude: data.lng});
         });
         const requestPermissions = async () => {
             const foreground = await Location.requestForegroundPermissionsAsync();
@@ -61,10 +70,7 @@ const ClientOrderMapViewModel = (order: Order) => {
         }
 
         const location = await Location.getLastKnownPositionAsync(); // UBICACION UNA SOLA VEZ
-        setOrigin({
-            latitude: location?.coords.latitude!,
-            longitude: location?.coords.longitude!,
-        });
+        
         const newCamera: Camera = {
             center: { latitude: location?.coords.latitude!, longitude: location?.coords.longitude! },
             zoom: 15,
@@ -77,13 +83,13 @@ const ClientOrderMapViewModel = (order: Order) => {
 
     return {
         messagePermissions,
-        postion,
+        position,
         mapRef,
         ...refPoint,
         origin,
-        destination,
         responseMessage,
         socket,
+        positionOnce,
     }
 }
 

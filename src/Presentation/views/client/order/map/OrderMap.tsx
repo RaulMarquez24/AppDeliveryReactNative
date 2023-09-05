@@ -17,7 +17,7 @@ interface Props extends StackScreenProps<ClientOrderStackParamList, 'ClientOrder
 export const ClientOrderMapScreen = ({ navigation, route }: Props) => {
 
     const { order } = route.params;
-    const { messagePermissions, postion, mapRef, origin, destination, responseMessage, socket } = useViewModel(order);
+    const { messagePermissions, position, mapRef, origin, responseMessage, socket, positionOnce } = useViewModel(order);
 
     useEffect(() => {
         if (messagePermissions != '') {
@@ -48,8 +48,8 @@ export const ClientOrderMapScreen = ({ navigation, route }: Props) => {
                 zoomControlEnabled={true}
             >
                 {
-                    postion.latitude !== 0.0 &&
-                    <Marker coordinate={postion}>
+                    position.latitude !== 0.0 &&
+                    <Marker coordinate={position}>
                         <Image
                             style={styles.markerImage}
                             source={require('../../../../../../assets/delivery.png')}
@@ -66,10 +66,10 @@ export const ClientOrderMapScreen = ({ navigation, route }: Props) => {
                     </Marker>
                 }
                 {
-                    origin.latitude !== 0.0 &&
+                    (origin.latitude !== 0.0 && positionOnce.latitude !== 0.0) &&
                     <MapViewDirections
                         origin={origin}
-                        destination={destination}
+                        destination={positionOnce}
                         apikey={GOOGLE_MAPS_APIKEY}
                         strokeWidth={3}
                         strokeColor={MyColors.primary}
